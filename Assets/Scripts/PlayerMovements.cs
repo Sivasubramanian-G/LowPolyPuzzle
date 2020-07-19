@@ -14,6 +14,9 @@ public class PlayerMovements : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 relativePosition;
     public bool canMove = true;
+    public bool canRotateL = true;
+    public bool canRotateR = true;
+    public bool canRotateB = true;
     public bool start;
     public bool runAnim = false;
 
@@ -37,7 +40,7 @@ public class PlayerMovements : MonoBehaviour
             canMove = true;
         }
 
-        Vector3 dir = this.transform.TransformDirection(Vector3.forward);
+       /* Vector3 dir = this.transform.TransformDirection(Vector3.forward);
 
         Debug.DrawRay(this.transform.position, dir * 10, Color.green);
 
@@ -47,7 +50,7 @@ public class PlayerMovements : MonoBehaviour
 
         Vector3 dir2 = this.transform.TransformDirection(Vector3.up);
 
-        Debug.DrawRay(this.transform.position, dir2 * 10, Color.blue);        
+        Debug.DrawRay(this.transform.position, dir2 * 10, Color.blue);   */     
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -59,49 +62,62 @@ public class PlayerMovements : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                targetPosition = hit.point;
-
-                Vector3 distance = targetPosition - this.transform.position;
-                relativePosition = Vector3.zero;
-                relativePosition.x = Vector3.Dot(distance, this.transform.right.normalized);
-                relativePosition.y = Vector3.Dot(distance, this.transform.up.normalized);
-                relativePosition.z = Vector3.Dot(distance, this.transform.forward.normalized);
-
-                targetPosition.y = this.transform.position.y;
-
-                if (Math.Abs(distance.x) > Math.Abs(distance.z))
+                if (hit.collider != null)
                 {
-                    targetPosition.z = this.transform.position.z;
-                }
-                else
-                {
-                    targetPosition.x = this.transform.position.x;
-                }
-
-                if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.y))
-                {
-                    if (relativePosition.x > 0.0)
+                    try
                     {
-                        anim.Play("TurnRight");
-                        smooth = 0.35f;
-                        targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
-                        
+                        if (hit.collider.transform.parent.name == "TileParent")
+                        {
+                            targetPosition = hit.collider.transform.position;
+
+                            Vector3 distance = targetPosition - this.transform.position;
+                            relativePosition = Vector3.zero;
+                            relativePosition.x = Vector3.Dot(distance, this.transform.right.normalized);
+                            relativePosition.y = Vector3.Dot(distance, this.transform.up.normalized);
+                            relativePosition.z = Vector3.Dot(distance, this.transform.forward.normalized);
+
+                            targetPosition.y = this.transform.position.y;
+
+                            if (Math.Abs(distance.x) > Math.Abs(distance.z))
+                            {
+                                targetPosition.z = this.transform.position.z;
+                            }
+                            else
+                            {
+                                targetPosition.x = this.transform.position.x;
+                            }
+
+                            if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.y))
+                            {
+                                if (relativePosition.x > 0.0 && canRotateR)
+                                {
+                                    anim.Play("TurnRight");
+                                    smooth = 0.35f;
+                                    targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
+
+                                }
+                                else if (canRotateL)
+                                {
+                                    anim.Play("TurnLeft");
+                                    smooth = 0.35f;
+                                    targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
+                                }
+                            }
+                            else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
+                            {
+                                if (relativePosition.y > 0.0 && canRotateB)
+                                {
+                                    anim.Play("TurnAround");
+                                    smooth = 0.5f;
+                                    targetRotation *= Quaternion.AngleAxis(180, Vector3.forward);
+                                }
+                            }
+                        }
                     }
-                    else
+                    catch (Exception)
                     {
-                        anim.Play("TurnLeft");
-                        smooth = 0.35f;
-                        targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
+                        targetPosition = this.transform.position;
                     }
-                }
-                else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
-                {
-                    if (relativePosition.y > 0.0)
-                    {
-                        anim.Play("TurnAround");
-                        smooth = 0.5f;
-                        targetRotation *= Quaternion.AngleAxis(180, Vector3.forward);
-                    }   
                 }
             }
         }

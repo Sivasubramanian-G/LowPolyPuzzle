@@ -26,6 +26,7 @@ public class DontMove : MonoBehaviour
             {
                 if (hit.collider.transform.parent.name == "NonTileParent")
                 {
+                    Debug.Log("It's a hit!");
                     movement.canMove = false;
                 }
             }
@@ -33,6 +34,7 @@ public class DontMove : MonoBehaviour
             {
                 if (hit.collider.transform.parent.name == "NonTileParent")
                 {
+                    Debug.Log("It's a hit!");
                     movement.canMove = false;
                     movement.canRotateB = false;
                 }
@@ -41,6 +43,7 @@ public class DontMove : MonoBehaviour
             {
                 if (hit.collider.transform.parent.name == "NonTileParent")
                 {
+                    Debug.Log("It's a hit!");
                     movement.canMove = false;
                     movement.canRotateR = false;
                 }
@@ -49,6 +52,7 @@ public class DontMove : MonoBehaviour
             {
                 if (hit.collider.transform.parent.name == "NonTileParent")
                 {
+                    Debug.Log("It's a hit!");
                     movement.canMove = false;
                     movement.canRotateL = false;
                 }

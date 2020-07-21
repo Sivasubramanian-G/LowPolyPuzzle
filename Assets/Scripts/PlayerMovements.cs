@@ -14,11 +14,10 @@ public class PlayerMovements : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 relativePosition;
     public bool canMove = true;
-    public bool canRotateL = true;
     public bool canRotateR = true;
-    public bool canRotateB = true;
     public bool start;
     public bool runAnim = false;
+    public float distance = 100;
 
     private void Start()
     {
@@ -40,17 +39,26 @@ public class PlayerMovements : MonoBehaviour
             canMove = true;
         }
 
-       /* Vector3 dir = this.transform.TransformDirection(Vector3.forward);
+        Vector3 dir = this.transform.TransformDirection(Vector3.right);
 
-        Debug.DrawRay(this.transform.position, dir * 10, Color.green);
+        Debug.DrawRay(this.transform.position, dir * distance, Color.red);
+        RaycastHit hitR;
 
-        Vector3 dir1 = this.transform.TransformDirection(Vector3.right);
-
-        Debug.DrawRay(this.transform.position, dir1 * 10, Color.red);
-
-        Vector3 dir2 = this.transform.TransformDirection(Vector3.up);
-
-        Debug.DrawRay(this.transform.position, dir2 * 10, Color.blue);   */     
+        if (Physics.Raycast(transform.position, dir, out hitR, distance))
+        {
+            try
+            {
+                if (hitR.collider.transform.parent.name == "NonTileParent")
+                {
+                    canRotateR = false;
+                }
+            }
+            catch (Exception)
+            {
+                canMove = true;
+                canRotateR = true;
+            }
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -89,14 +97,14 @@ public class PlayerMovements : MonoBehaviour
 
                             if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.y))
                             {
-                                if (relativePosition.x > 0.0 && canRotateR)
+                                if (relativePosition.x > 0.0)
                                 {
                                     anim.Play("TurnRight");
                                     smooth = 0.35f;
                                     targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
 
                                 }
-                                else if (canRotateL)
+                                else
                                 {
                                     anim.Play("TurnLeft");
                                     smooth = 0.35f;
@@ -105,7 +113,7 @@ public class PlayerMovements : MonoBehaviour
                             }
                             else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
                             {
-                                if (relativePosition.y > 0.0 && canRotateB)
+                                if (relativePosition.y > 0.0)
                                 {
                                     anim.Play("TurnAround");
                                     smooth = 0.5f;

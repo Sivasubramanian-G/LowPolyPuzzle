@@ -14,6 +14,7 @@ public class NavMovement : MonoBehaviour
     void Start()
     {
         agent = this.GetComponent<NavMeshAgent>();
+        targetPosition = this.transform.position;
     }
 
     void Update()

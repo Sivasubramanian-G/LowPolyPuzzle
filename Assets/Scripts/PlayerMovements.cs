@@ -39,7 +39,7 @@ public class PlayerMovements : MonoBehaviour
             canMove = true;
         }
 
-        Vector3 dir = this.transform.TransformDirection(Vector3.right);
+        /*Vector3 dir = this.transform.TransformDirection(Vector3.right);
 
         Debug.DrawRay(this.transform.position, dir * distance, Color.red);
         RaycastHit hitR;
@@ -51,20 +51,23 @@ public class PlayerMovements : MonoBehaviour
                 if (hitR.collider.transform.parent.name == "NonTileParent")
                 {
                     canRotateR = false;
+                    canMove = false;
+                    runAnim = false;
                 }
             }
             catch (Exception)
             {
                 canMove = true;
                 canRotateR = true;
+                runAnim = true;
             }
-        }
+        }*/
 
         if (Input.GetMouseButtonDown(0))
         {
             start = false;
-            canMove = false;
-            runAnim = true;
+            //canMove = false;
+            //runAnim = true;
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 

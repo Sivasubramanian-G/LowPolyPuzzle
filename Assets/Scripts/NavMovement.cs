@@ -10,11 +10,15 @@ public class NavMovement : MonoBehaviour
     public NavMeshAgent agent;
     public Camera cam;
     public Vector3 targetPosition;
+    public Animator anim;
+    public GameObject player;
+    public bool tap = false;
 
     void Start()
     {
         agent = this.GetComponent<NavMeshAgent>();
         targetPosition = this.transform.position;
+        anim = player.GetComponent<Animator>();
     }
 
     void Update()
@@ -33,15 +37,33 @@ public class NavMovement : MonoBehaviour
                         if (hit.collider.transform.parent.name == "TileParent")
                         {
                             targetPosition = hit.collider.transform.position;
+                            tap = true;
                         }
                     }
                     catch (Exception)
                     {
                         targetPosition = this.transform.position;
+                        tap = false;
                     }
                 }   
             }
             agent.SetDestination(targetPosition);
         }
+
+        if (agent.remainingDistance > agent.stoppingDistance)
+        {
+            if (tap)
+            {
+                anim.Play("RunStart");
+                anim.SetBool("RunLoopStop", false);
+                tap = false;
+            }
+        }
+        else
+        {
+            anim.SetBool("RunLoopStop", true);
+        }
+
+
     }
 }

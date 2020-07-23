@@ -3721,6 +3721,9 @@ MonoBehaviour:
   agent: {fileID: 1296594608}
   cam: {fileID: 963194227}
   targetPosition: {x: 0, y: 0, z: 0}
+  anim: {fileID: 0}
+  player: {fileID: 555449519}
+  tap: 0
 --- !u!195 &1296594608
 NavMeshAgent:
   m_ObjectHideFlags: 0

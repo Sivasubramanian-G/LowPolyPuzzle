@@ -19,7 +19,7 @@ public class NavMovement : MonoBehaviour
         agent = this.GetComponent<NavMeshAgent>();
         targetPosition = this.transform.position;
         anim = player.GetComponent<Animator>();
-        anim.speed = 5f;
+        anim.speed = 3f;
     }
 
     void Update()

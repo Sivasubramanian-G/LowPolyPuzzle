@@ -19,6 +19,7 @@ public class NavMovement : MonoBehaviour
         agent = this.GetComponent<NavMeshAgent>();
         targetPosition = this.transform.position;
         anim = player.GetComponent<Animator>();
+        anim.speed = 5f;
     }
 
     void Update()
@@ -48,6 +49,21 @@ public class NavMovement : MonoBehaviour
                 }   
             }
             agent.SetDestination(targetPosition);
+
+            /*if (agent.nextPosition.x > 0 && agent.nextPosition.x < 1)
+            {
+                agent.nextPosition.Set(0, targetPosition.y, targetPosition.z);
+            }*/
+
+        }
+
+        if (this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft"))
+        {
+            agent.isStopped = true;
+        }
+        else
+        {
+            agent.isStopped = false;
         }
 
         if (agent.remainingDistance > agent.stoppingDistance)
@@ -58,6 +74,17 @@ public class NavMovement : MonoBehaviour
                 anim.SetBool("RunLoopStop", false);
                 tap = false;
             }
+            /*Vector3 s = agent.transform.InverseTransformDirection(agent.velocity).normalized;
+            float turn = s.x;
+            if (turn > 0)
+            {
+                anim.Play("TurnRight");
+            }
+            else if (turn < 0)
+            {
+                anim.Play("TurnLeft");
+            }*/
+
         }
         else
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,11 +20,34 @@ public class NavMovement : MonoBehaviour
         agent = this.GetComponent<NavMeshAgent>();
         targetPosition = this.transform.position;
         anim = player.GetComponent<Animator>();
-        anim.speed = 3f;
+        anim.speed = 2f;
     }
 
     void Update()
     {
+        /*Debug.Log(agent.velocity);
+
+        if (Math.Abs(agent.velocity.x) > 1)
+        {
+            if (agent.velocity.x < 0)
+            {
+                anim.Play("TurnLeft");
+            }
+            else
+            {
+                anim.Play("TurnRight");
+            }
+        }
+
+        if (this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft"))
+        {
+            agent.isStopped = true;
+        }
+        else
+        {
+            agent.isStopped = false;
+        }*/
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -57,15 +81,6 @@ public class NavMovement : MonoBehaviour
 
         }
 
-        if (this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft"))
-        {
-            agent.isStopped = true;
-        }
-        else
-        {
-            agent.isStopped = false;
-        }
-
         if (agent.remainingDistance > agent.stoppingDistance)
         {
             if (tap)
@@ -92,5 +107,10 @@ public class NavMovement : MonoBehaviour
         }
 
 
+    }
+
+    private float normalize(Vector3 velocity)
+    {
+        throw new NotImplementedException();
     }
 }

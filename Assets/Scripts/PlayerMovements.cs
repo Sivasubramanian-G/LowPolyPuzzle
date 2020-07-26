@@ -5,19 +5,27 @@ using UnityEngine;
 
 public class PlayerMovements : MonoBehaviour
 {
-    public Animator anim;
     private Quaternion targetRotation;
-    public float smooth;
+
+    public Animator anim;
+
     public Camera cam = null;
-    public float speed = 12f;
+    
     public Rigidbody rb;
+
     private Vector3 targetPosition;
     private Vector3 relativePosition;
+
     public bool canMove = true;
     public bool canRotateR = true;
+    public bool canRotateL = true;
     public bool start;
     public bool runAnim = false;
-    public float distance = 100;
+    public bool canClick = true;
+
+    public float dist = 100;
+    public float speed = 12f;
+    public float smooth;
 
     private void Start()
     {
@@ -39,35 +47,59 @@ public class PlayerMovements : MonoBehaviour
             canMove = true;
         }
 
-        /*Vector3 dir = this.transform.TransformDirection(Vector3.right);
+        canRotateL = true;
+        canRotateR = true;
 
-        Debug.DrawRay(this.transform.position, dir * distance, Color.red);
-        RaycastHit hitR;
+        Vector3 dirR = this.transform.TransformDirection(Vector3.right);
+        Vector3 dirL = this.transform.TransformDirection(Vector3.left);
 
-        if (Physics.Raycast(transform.position, dir, out hitR, distance))
+        Debug.DrawRay(this.transform.position, dirR * dist, Color.red);
+        Debug.DrawRay(this.transform.position, dirL * dist, Color.green);
+
+        RaycastHit hitR, hitL;
+
+        if (Physics.Raycast(transform.position, dirR, out hitR, dist))
         {
             try
             {
-                if (hitR.collider.transform.parent.name == "NonTileParent")
+                if (hitR.collider != null)
                 {
-                    canRotateR = false;
-                    canMove = false;
-                    runAnim = false;
+                    if (hitR.collider.transform.parent.name == "NonTileParent")
+                    {
+                        canRotateR = false;
+                    }
                 }
             }
             catch (Exception)
             {
-                canMove = true;
                 canRotateR = true;
-                runAnim = true;
             }
-        }*/
+        }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(transform.position, dirL, out hitL, dist))
+        {
+            try
+            {
+                if (hitL.collider != null)
+                {
+                    if (hitL.collider.transform.parent.name == "NonTileParent")
+                    {
+                        canRotateL = false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                canRotateL = true;
+            }
+        }
+
+        if (Input.GetMouseButtonDown(0) && canClick)
         {
             start = false;
-            //canMove = false;
-            //runAnim = true;
+            canMove = false;
+            runAnim = true;
+
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -102,16 +134,31 @@ public class PlayerMovements : MonoBehaviour
                             {
                                 if (relativePosition.x > 0.0)
                                 {
-                                    anim.Play("TurnRight");
-                                    smooth = 0.35f;
-                                    targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
-
+                                    if (canRotateR)
+                                    {
+                                        anim.Play("TurnRight");
+                                        smooth = 0.35f;
+                                        targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
+                                    }
+                                    else
+                                    {
+                                        runAnim = false;
+                                        targetPosition = this.transform.position;
+                                    }
                                 }
-                                else
+                                if (relativePosition.x < 0.0)
                                 {
-                                    anim.Play("TurnLeft");
-                                    smooth = 0.35f;
-                                    targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
+                                    if (canRotateL)
+                                    {
+                                        anim.Play("TurnLeft");
+                                        smooth = 0.35f;
+                                        targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
+                                    }
+                                    else
+                                    {
+                                        runAnim = false;
+                                        targetPosition = this.transform.position;
+                                    }
                                 }
                             }
                             else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
@@ -141,11 +188,13 @@ public class PlayerMovements : MonoBehaviour
             {
                 anim.Play("RunStart");
                 anim.SetBool("RunLoopStop", false);
+                canClick = false;
                 runAnim = false;
             }
             if (this.transform.position == targetPosition && !runAnim)
             {
                 anim.SetBool("RunLoopStop", true);
+                canClick = true;
             }
             rb.MovePosition(Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime));
         }

@@ -338,17 +338,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.14705205
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
@@ -1177,12 +1177,18 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   relativePosition: {x: 0, y: 0, z: 0}
   finalTargetPosition: {x: 0, y: 0, z: 0}
+  Pos: {x: 0, y: 0, z: 0}
+  dirF: {x: 0, y: 0, z: 0}
+  dirB: {x: 0, y: 0, z: 0}
+  dirL: {x: 0, y: 0, z: 0}
+  dirR: {x: 0, y: 0, z: 0}
   canMove: 1
   canRotateR: 1
   canRotateL: 1
   start: 0
   runAnim: 0
   canClick: 1
+  canInstance: 1
   dist: 100
   speed: 12
   smooth: 0

@@ -17,12 +17,16 @@ public class PlayerMovements : MonoBehaviour
     public Vector3 relativePosition;
     public Vector3 finalTargetPosition;
 
+    public Vector3 Pos;
+    public Vector3 dirF, dirB, dirL, dirR;
+
     public bool canMove = true;
     public bool canRotateR = true;
     public bool canRotateL = true;
     public bool start;
     public bool runAnim = false;
     public bool canClick = true;
+    public bool canInstance = true;
 
     public float dist = 100;
     public float speed = 12f;
@@ -36,6 +40,7 @@ public class PlayerMovements : MonoBehaviour
         finalTargetPosition = this.transform.position;
         rb = GetComponent<Rigidbody>();
         anim.speed = 5f;
+        
     }
 
     private void Update()
@@ -47,60 +52,33 @@ public class PlayerMovements : MonoBehaviour
         else
         {
             canMove = true;
-
             canRotateL = true;
             canRotateR = true;
 
-            Vector3 dirR = this.transform.TransformDirection(Vector3.right);
-            Vector3 dirL = this.transform.TransformDirection(Vector3.left);
-
-            Debug.DrawRay(this.transform.position, dirR * dist, Color.red);
-            Debug.DrawRay(this.transform.position, dirL * dist, Color.green);
-
-            RaycastHit hitR, hitL;
-
-            if (Physics.Raycast(transform.position, dirR, out hitR, dist))
+            if (anim.GetBool("RunLoopStop") == true && canInstance)
             {
-                try
-                {
-                    if (hitR.collider != null)
-                    {
-                        if (hitR.collider.transform.parent.name == "NonTileParent")
-                        {
-                            canRotateR = false;
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    canRotateR = true;
-                }
-            }
+                Pos = new Vector3(this.transform.position.x, this.transform.position.y - (this.GetComponent<Collider>().bounds.size.y) / 1.5f, this.transform.position.z + (this.GetComponent<Collider>().bounds.size.z) / 1.5f);
+                dirF = this.transform.TransformDirection(-Vector3.up);
+                Debug.DrawRay(Pos, dirF * dist, Color.blue);
+                RaycastHit[] hitF;
 
-            if (Physics.Raycast(transform.position, dirL, out hitL, dist))
-            {
-                try
+                hitF = Physics.RaycastAll(Pos, dirF, dist);
+
+                for (int i = 0; i < hitF.Length; i++)
                 {
-                    if (hitL.collider != null)
-                    {
-                        if (hitL.collider.transform.parent.name == "NonTileParent")
-                        {
-                            canRotateL = false;
-                        }
-                    }
+                    RaycastHit hit = hitF[i];
+                    Debug.Log("Hit: " + hit.collider.name);
                 }
-                catch (Exception)
-                {
-                    canRotateL = true;
-                }
+                canInstance = false;
             }
         }
 
-        /*if (Input.GetMouseButtonDown(0) && canClick)
+        if (Input.GetMouseButtonDown(0) && canClick)
         {
             start = false;
             canMove = false;
             runAnim = true;
+            canInstance = true;
 
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -173,6 +151,7 @@ public class PlayerMovements : MonoBehaviour
                                 }
                             }
                         }
+                        anim.SetBool("RunLoopStop", false);
                     }
                     catch (Exception)
                     {
@@ -180,60 +159,6 @@ public class PlayerMovements : MonoBehaviour
                     }
                 }
             }
-        }*/
-
-        if (Input.GetMouseButtonDown(0) && canClick)
-        {
-            start = false;
-            canMove = false;
-            runAnim = true;
-
-            RaycastHit hit;
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider != null)
-                {
-                    try
-                    {
-                        if (hit.collider.transform.parent.name == "TileParent")
-                        {
-                            finalTargetPosition = hit.collider.transform.position;
-                            targetPosition = hit.collider.transform.position;
-                            targetPosition.y = this.transform.position.y;
-                            finalTargetPosition.y = this.transform.position.y;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        finalTargetPosition = this.transform.position;
-                        targetPosition = this.transform.position;
-                    }
-                }
-            }
-        }
-
-        if (this.transform.position != finalTargetPosition)
-        {
-            start = false;
-            //canMove = false;
-            runAnim = true;
-
-            Vector3 distance = finalTargetPosition - this.transform.position;
-            relativePosition = Vector3.zero;
-            relativePosition.x = Vector3.Dot(distance, this.transform.right.normalized);
-            relativePosition.y = Vector3.Dot(distance, this.transform.up.normalized);
-            relativePosition.z = Vector3.Dot(distance, this.transform.forward.normalized);
-
-            targetPosition.y = this.transform.position.y;
-            finalTargetPosition.y = this.transform.position.y;
-
-            if (this.transform.position != targetPosition)
-            {
-                MoveIt(distance);
-            }
-
         }
 
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 20 * smooth * Time.deltaTime);
@@ -243,7 +168,7 @@ public class PlayerMovements : MonoBehaviour
             if (this.transform.position != targetPosition && runAnim)
             {
                 anim.Play("RunStart");
-                anim.SetBool("RunLoopStop", false);
+                //anim.SetBool("RunLoopStop", false);
                 canClick = false;
                 runAnim = false;
             }
@@ -255,58 +180,4 @@ public class PlayerMovements : MonoBehaviour
             rb.MovePosition(Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime));
         }
     }
-
-    public void MoveIt(Vector3 distance)
-    {
-        if (Math.Abs(distance.x) > Math.Abs(distance.z))
-        {
-            targetPosition.z = this.transform.position.z;
-        }
-        else
-        {
-            targetPosition.x = this.transform.position.x;
-        }
-
-        if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.y))
-        {
-            if (relativePosition.x > 0.0)
-            {
-                if (canRotateR)
-                {
-                    anim.Play("TurnRight");
-                    smooth = 0.35f;
-                    targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
-                }
-                else
-                {
-                    runAnim = false;
-                    targetPosition = this.transform.position;
-                }
-            }
-            if (relativePosition.x < 0.0)
-            {
-                if (canRotateL)
-                {
-                    anim.Play("TurnLeft");
-                    smooth = 0.35f;
-                    targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
-                }
-                else
-                {
-                    runAnim = false;
-                    targetPosition = this.transform.position;
-                }
-            }
-        }
-        else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
-        {
-            if (relativePosition.y > 0.0)
-            {
-                anim.Play("TurnAround");
-                smooth = 0.5f;
-                targetRotation *= Quaternion.AngleAxis(180, Vector3.forward);
-            }
-        }
-    }
-
 }

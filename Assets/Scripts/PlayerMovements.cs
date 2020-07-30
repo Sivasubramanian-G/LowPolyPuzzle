@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class PlayerMovements : MonoBehaviour
 {
@@ -86,7 +83,7 @@ public class PlayerMovements : MonoBehaviour
                     {
                         break;
                     }
-                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y/2, hit.collider.transform.position.z);
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
                     Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
                 }
 
@@ -117,10 +114,8 @@ public class PlayerMovements : MonoBehaviour
                     RaycastHit hit = hitR[i];
                     if (hit.collider.transform.parent.name == "NonTileParent")
                     {
-                        Debug.Log("It's a fooking break u idiot");
                         break;
                     }
-                    Debug.Log(hitR[i]);
                     guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
                     Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
                 }
@@ -134,7 +129,7 @@ public class PlayerMovements : MonoBehaviour
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, dist))
             {
                 if (hit.collider != null)
                 {
@@ -214,15 +209,25 @@ public class PlayerMovements : MonoBehaviour
                         }
                         anim.SetBool("RunLoopStop", false);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Debug.Log("Mouse Click Shit: "+ e);
                         targetPosition = this.transform.position;
                     }
                 }
             }
         }
 
+        
+    }
+
+    public void InstObjs()
+    {
+        Debug.Log("InstObjs called");
+        
+    }
+
+    public void DestroyInsts()
+    {
         
     }
 

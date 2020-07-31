@@ -6,6 +6,7 @@ public class DragObject : MonoBehaviour
 	private Vector3 offset;
 	private Vector3 initialPos;
 	public PlayerMovements playerMov = null;
+	public bool canInst = true;
 
 	void Start()
     {
@@ -13,28 +14,32 @@ public class DragObject : MonoBehaviour
 		initialPos = transform.position;
     }
 
-	void Update()
+	/*void Update()
     {
-		//if (Input.GetMouseButtonUp(0))
-		//{
+		if (Input.GetMouseButtonUp(0))
+		{
 			//playerMov.canInstance = true;
-			//playerMov.InstObjs();
-		//}
-	}
+			playerMov.InstObjs();
+		}
+	}*/
+
 	void OnMouseUp()
     {
-		
-    }
+		playerMov.canMove = true;
+		playerMov.InstObjs();
+	}
 
 	void OnMouseDown()
 	{
-		//playerMov.DestroyInsts();
+		playerMov.canMove = false;
+		playerMov.DestroyInsts();
 		screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 		offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 	}
 
 	void OnMouseDrag()
 	{
+		canInst = false;
 		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 		Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
 		if (cursorPosition.y > 3)
@@ -44,7 +49,7 @@ public class DragObject : MonoBehaviour
 		else if (cursorPosition.y < initialPos.y)
         {
 			cursorPosition.y = initialPos.y;
-
+			canInst = true;
 		}
 		transform.position = new Vector3(transform.position.x, cursorPosition.y, transform.position.z);
 	}

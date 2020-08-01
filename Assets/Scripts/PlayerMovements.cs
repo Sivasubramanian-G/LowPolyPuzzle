@@ -24,6 +24,9 @@ public class PlayerMovements : MonoBehaviour
 
     [HideInInspector]
     public RaycastHit[] hitF, hitB, hitL, hitR;
+    [HideInInspector]
+    public Ray ray;
+    public RaycastHit hitM;
 
     [HideInInspector]
     public Vector3 targetPosition;
@@ -50,16 +53,6 @@ public class PlayerMovements : MonoBehaviour
 
     private void Update()
     {
-        pos = new Vector3(this.transform.position.x, this.transform.position.y - (this.GetComponent<Collider>().bounds.size.y) / 1.5f, this.transform.position.z + (this.GetComponent<Collider>().bounds.size.z) / 1.5f);
-        dirF = this.transform.TransformDirection(-Vector3.up);
-        dirR = this.transform.TransformDirection(Vector3.right);
-        dirL = this.transform.TransformDirection(Vector3.left);
-        dirB = this.transform.TransformDirection(Vector3.up);
-
-        Debug.DrawRay(pos, dirF * dist, Color.blue);
-        Debug.DrawRay(pos, dirR * dist, Color.red);
-        Debug.DrawRay(pos, dirL * dist, Color.green);
-        Debug.DrawRay(pos, dirB * dist, Color.yellow);
 
         if (this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnAround"))
         {
@@ -73,74 +66,23 @@ public class PlayerMovements : MonoBehaviour
             {
                 InstObjs();
             }
-
-            /*if (anim.GetBool("RunLoopStop") == true && canInstance)
-            {
-                hitF = Physics.RaycastAll(pos, dirF, dist).OrderBy(h => h.distance).ToArray();
-                hitB = Physics.RaycastAll(pos, dirB, dist).OrderBy(h => h.distance).ToArray();
-                hitL = Physics.RaycastAll(pos, dirL, dist).OrderBy(h => h.distance).ToArray();
-                hitR = Physics.RaycastAll(pos, dirR, dist).OrderBy(h => h.distance).ToArray();
-
-                for (int i = 0; i < hitF.Length; i++)
-                {
-                    RaycastHit hit = hitF[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                }
-
-                for (int i = 0; i < hitB.Length; i++)
-                {
-                    RaycastHit hit = hitB[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                }
-
-                for (int i = 0; i < hitL.Length; i++)
-                {
-                    RaycastHit hit = hitL[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                }
-
-                for (int i = 0; i < hitR.Length; i++)
-                {
-                    RaycastHit hit = hitR[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                }
-                canInstance = false;
-            }*/
         }
 
-        if (Input.GetMouseButtonDown(0) && canClick)
+        if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("PlayerMovement MouseClick");
-            RaycastHit hit;
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            ray = cam.ScreenPointToRay(Input.mousePosition);
+        }
 
-            if (Physics.Raycast(ray, out hit, dist))
+        if (Input.GetMouseButtonUp(0) && canClick)
+        {
+
+            if (Physics.Raycast(ray, out hitM, dist))
             {
-                if (hit.collider != null)
+                if (hitM.collider != null)
                 {
                     try
                     {
-                        if (hit.collider.transform.parent.name == "TileParent" && hit.transform.Find("Sphere(Clone)") != null)
+                        if (hitM.collider.transform.parent.name == "TileParent" && hitM.transform.Find("Sphere(Clone)") != null)
                         {
 
                             canInstance = true;
@@ -150,38 +92,7 @@ public class PlayerMovements : MonoBehaviour
 
                             DestroyInsts();
 
-                            /*for (int i = 0; i < hitF.Length; i++)
-                            {
-                                if (hitF[i].transform.Find("Sphere(Clone)") != null)
-                                {
-                                    Destroy(hitF[i].transform.Find("Sphere(Clone)").gameObject);
-                                }
-                            }
-                            for (int i = 0; i < hitB.Length; i++)
-                            {
-                                if (hitB[i].transform.Find("Sphere(Clone)") != null)
-                                {
-                                    Destroy(hitB[i].transform.Find("Sphere(Clone)").gameObject);
-                                }
-                            }
-                            for (int i = 0; i < hitL.Length; i++)
-                            {
-                                if (hitL[i].transform.Find("Sphere(Clone)") != null)
-                                {
-                                    Destroy(hitL[i].transform.Find("Sphere(Clone)").gameObject);
-                                }
-                            }
-                            for (int i = 0; i < hitR.Length; i++)
-                            {
-                                if (hitR[i].transform.Find("Sphere(Clone)") != null)
-                                {
-                                    Destroy(hitR[i].transform.Find("Sphere(Clone)").gameObject);
-                                }
-                            }*/
-
-                            targetPosition = hit.collider.transform.position;
-
-                            
+                            targetPosition = hitM.collider.transform.position;
 
                             Vector3 distance = targetPosition - this.transform.position;
                             relativePosition = Vector3.zero;

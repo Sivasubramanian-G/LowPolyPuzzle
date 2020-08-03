@@ -12,7 +12,6 @@ public class DragObject : MonoBehaviour
 
 	void Start()
     {
-		//playerMov = GetComponent<PlayerMovements>();
 		initialPos = transform.position;
     }
 

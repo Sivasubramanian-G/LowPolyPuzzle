@@ -94,11 +94,7 @@ public class PlayerMovements : MonoBehaviour
 
                             targetPosition = hitM.collider.transform.position;
 
-                            Vector3 distance = targetPosition - this.transform.position;
-                            relativePosition = Vector3.zero;
-                            relativePosition.x = Vector3.Dot(distance, this.transform.right.normalized);
-                            relativePosition.y = Vector3.Dot(distance, this.transform.up.normalized);
-                            relativePosition.z = Vector3.Dot(distance, this.transform.forward.normalized);
+                            relativePosition = CalRelPos(this.transform, targetPosition);
 
                             targetPosition.y = this.transform.position.y;
 
@@ -138,6 +134,16 @@ public class PlayerMovements : MonoBehaviour
         }
 
         
+    }
+
+    public Vector3 CalRelPos(Transform transformObj, Vector3 targetPosition)
+    {
+        Vector3 distance = targetPosition - transformObj.position;
+        Vector3 relativePosition = Vector3.zero;
+        relativePosition.x = Vector3.Dot(distance, transformObj.right.normalized);
+        relativePosition.y = Vector3.Dot(distance, transformObj.up.normalized);
+        relativePosition.z = Vector3.Dot(distance, transformObj.forward.normalized);
+        return relativePosition;
     }
 
     public void InstObjs()

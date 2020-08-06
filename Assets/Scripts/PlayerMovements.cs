@@ -53,6 +53,8 @@ public class PlayerMovements : MonoBehaviour
 
     private void Update()
     {
+        Vector3 dir = this.transform.TransformDirection(Vector3.back);
+        Debug.DrawRay(this.transform.position, dir * 2.5f, Color.magenta);
 
         if (this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnRight") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnLeft") || this.anim.GetCurrentAnimatorStateInfo(0).IsName("TurnAround"))
         {
@@ -75,7 +77,7 @@ public class PlayerMovements : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && canClick)
         {
-
+            Debug.Log("Mouse shit");
             if (Physics.Raycast(ray, out hitM, dist))
             {
                 if (hitM.collider != null)
@@ -265,4 +267,24 @@ public class PlayerMovements : MonoBehaviour
             rb.MovePosition(Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime));
         }
     }
+
+
+    void OnEnable()
+    {
+        Vector3 dir = this.transform.TransformDirection(Vector3.back);
+        Debug.DrawRay(this.transform.position, dir * 2.5f, Color.magenta);
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, dir, out hit, 2.5f))
+        {
+            if (hit.collider.transform.parent.name == "TileParent")
+            {
+                Debug.Log(hit.collider.name);
+                targetPosition = hit.collider.transform.position;
+                //targetPosition.y = this.transform.position.y;
+                runAnim = true;
+            }
+        }
+    }
+
 }

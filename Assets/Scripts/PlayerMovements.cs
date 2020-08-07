@@ -45,10 +45,54 @@ public class PlayerMovements : MonoBehaviour
     {
         start = true;
         targetRotation = this.transform.rotation;
-        targetPosition = this.transform.position;
+        //targetPosition = this.transform.position;
         rb = GetComponent<Rigidbody>();
         anim.speed = 5f;
         
+    }
+
+    public void FixedUpdate()
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 20 * smooth * Time.deltaTime);
+
+        if (canMove && !start)
+        {
+            if (this.transform.position != targetPosition && runAnim)
+            {
+                anim.Play("RunStart");
+                canClick = false;
+                runAnim = false;
+            }
+            if (this.transform.position == targetPosition && !runAnim)
+            {
+                anim.SetBool("RunLoopStop", true);
+                canClick = true;
+            }
+            rb.MovePosition(Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime));
+        }
+    }
+
+
+    void OnEnable()
+    {
+        targetPosition = this.transform.position;
+        ray = new Ray(this.transform.position, this.transform.TransformDirection(Vector3.back));
+        //targetPosition = this.transform.position;
+        Vector3 dir = this.transform.TransformDirection(Vector3.back);
+        Debug.DrawRay(this.transform.position, dir * 2.5f, Color.magenta);
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, dir, out hit, 2.5f))
+        {
+            if (hit.collider.transform.parent.name == "TileParent")
+            {
+                targetPosition = hit.collider.transform.position;
+                targetPosition.y = this.transform.position.y;
+                //ray = cam.WorldToScreenPoint(targetPosition);
+                runAnim = true;
+                canMove = true;
+            }
+        }
     }
 
     private void Update()
@@ -77,7 +121,6 @@ public class PlayerMovements : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && canClick)
         {
-            Debug.Log("Mouse shit");
             if (Physics.Raycast(ray, out hitM, dist))
             {
                 if (hitM.collider != null)
@@ -86,7 +129,6 @@ public class PlayerMovements : MonoBehaviour
                     {
                         if (hitM.collider.transform.parent.name == "TileParent" && hitM.transform.Find("Sphere(Clone)") != null)
                         {
-
                             canInstance = true;
                             start = false;
                             canMove = false;
@@ -246,45 +288,4 @@ public class PlayerMovements : MonoBehaviour
             }
         }
     }
-
-    public void FixedUpdate()
-    {
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 20 * smooth * Time.deltaTime);
-
-        if (canMove && !start)
-        {
-            if (this.transform.position != targetPosition && runAnim)
-            {
-                anim.Play("RunStart");
-                canClick = false;
-                runAnim = false;
-            }
-            if (this.transform.position == targetPosition && !runAnim)
-            {
-                anim.SetBool("RunLoopStop", true);
-                canClick = true;
-            }
-            rb.MovePosition(Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime));
-        }
-    }
-
-
-    void OnEnable()
-    {
-        Vector3 dir = this.transform.TransformDirection(Vector3.back);
-        Debug.DrawRay(this.transform.position, dir * 2.5f, Color.magenta);
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, dir, out hit, 2.5f))
-        {
-            if (hit.collider.transform.parent.name == "TileParent")
-            {
-                Debug.Log(hit.collider.name);
-                targetPosition = hit.collider.transform.position;
-                //targetPosition.y = this.transform.position.y;
-                runAnim = true;
-            }
-        }
-    }
-
 }

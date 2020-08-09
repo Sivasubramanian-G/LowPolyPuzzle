@@ -217,8 +217,11 @@ public class PlayerMovements : MonoBehaviour
                 {
                     break;
                 }
-                guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
             }
 
             for (int i = 0; i < hitB.Length; i++)
@@ -228,8 +231,11 @@ public class PlayerMovements : MonoBehaviour
                 {
                     break;
                 }
-                guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
             }
 
             for (int i = 0; i < hitL.Length; i++)
@@ -239,8 +245,11 @@ public class PlayerMovements : MonoBehaviour
                 {
                     break;
                 }
-                guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
             }
 
             for (int i = 0; i < hitR.Length; i++)
@@ -250,8 +259,11 @@ public class PlayerMovements : MonoBehaviour
                 {
                     break;
                 }
-                guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
             }
             canInstance = false;
         }

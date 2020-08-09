@@ -2,13 +2,14 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.UIElements;
 
 public class MovableObjs : MonoBehaviour
 {
     public PlayerMovements playerMov = null;
     public Vector3 relativePosition, distance, targetPosition;
     public bool canMove = false, havePlayer = false;
-    public Vector3 dir, dir1, pos;
+    public Vector3 dir, dir1, dirD, pos;
     public float dist = 100f;
     public RaycastHit[] hit, hit1, hits, hits1;
     public RaycastHit hitM;
@@ -75,7 +76,10 @@ public class MovableObjs : MonoBehaviour
         playerMov.GetComponent<PlayerMovements>().enabled = true;
         playerMov.canMove = true;
         playerMov.canClick = true;
-        playerMov.InstObjs();
+        if (canDrag)
+        {
+            playerMov.InstObjs();
+        }
         canDrag = false;
         targetPosition = this.transform.position;
         Vector3 dir = this.transform.TransformDirection(Vector3.down);
@@ -94,11 +98,6 @@ public class MovableObjs : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        
-    }
-
     void OnMouseDown()
     {
         playerMov.canClick = false;
@@ -107,11 +106,26 @@ public class MovableObjs : MonoBehaviour
         playerMov.DestroyInsts();
         screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
         offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        if (!canDrag)
+        {
+            playerMov.InstObjs();
+        }
         playerMov.GetComponent<PlayerMovements>().enabled = false;
     }
 
     void OnMouseDrag()
     {
+        if (lefR)
+        {
+            dir = this.transform.TransformDirection(Vector3.right);
+            dir1 = this.transform.TransformDirection(Vector3.left);
+        }
+        else if (forB)
+        {
+            dir = this.transform.TransformDirection(Vector3.forward);
+            dir1 = this.transform.TransformDirection(Vector3.back);
+        }
+
         playerMov.canClick = false;
         Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
         Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
@@ -130,6 +144,69 @@ public class MovableObjs : MonoBehaviour
                 playerMov.transform.position = new Vector3(playerMov.transform.position.x, playerMov.transform.position.y, gameObject.transform.position.z - distance.z);
                 nonTileDragObj.transform.position = new Vector3(transform.position.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, cursorPosition.z);
             }
+
+            dirD = this.transform.TransformDirection(Vector3.down);
+            hits = Physics.RaycastAll(this.transform.position, dirD, 2.5f).OrderBy(h => h.distance).ToArray();
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                if (hits[i].collider.transform.parent.name == "TileParent")
+                {
+                    hit = Physics.RaycastAll(hits[i].collider.transform.position, dir, 2.5f).OrderBy(h => h.distance).ToArray();
+                    hit1 = Physics.RaycastAll(hits[i].collider.transform.position, dir1, 2.5f).OrderBy(h => h.distance).ToArray();
+
+                    for (int j = 0; j < hit.Length; j++)
+                    {
+                        if (hit[j].collider.transform.parent.name == "TileParent")
+                        {
+                            break;
+                        }
+                        else if (hit[j].collider.transform.parent.name == "NonTileParent")
+                        {
+                            transform.position = new Vector3(hit[j].collider.transform.position.x, transform.position.y, hit[j].collider.transform.position.z);
+                        }
+                    }
+
+                    for (int j = 0; j < hit1.Length; j++)
+                    {
+                        if (hit1[j].collider.transform.parent.name == "TileParent")
+                        {
+                            break;
+                        }
+                        else if (hit1[j].collider.transform.parent.name == "NonTileParent")
+                        {
+                            transform.position = new Vector3(hit[j].collider.transform.position.x, transform.position.y, hit[j].collider.transform.position.z);
+                        }
+                    }
+
+                }
+            }
+
+            /*if (dir != null && dir1 != null)
+            {
+                dirD = this.transform.TransformDirection(Vector3.down);
+                hit = Physics.RaycastAll(pos, dir, dist).OrderBy(h => h.distance).ToArray();
+                hit1 = Physics.RaycastAll(pos, dir1, dist).OrderBy(h => h.distance).ToArray();
+                hits = Physics.RaycastAll(this.transform.position, dirD, dist).OrderBy(h => h.distance).ToArray();
+
+                Debug.DrawRay(pos, dir * dist, Color.red);
+                Debug.DrawRay(pos, dir1 * dist, Color.green);
+                Debug.DrawRay(this.transform.position, dirD * dist, Color.magenta);
+
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    if (hits[i].collider.transform.parent.name == "TileParent")
+                    {
+                        if (hit.Length > 0 && hit1.Length > 0)
+                        {
+                            if (hits[i].collider.name == hit[hit.Length - 2].collider.name || hits[i].collider.name == hit1[hit1.Length - 2].collider.name)
+                            {
+                                this.transform.position = hits[i].collider.transform.position;
+                            }
+                        }
+                    }
+                }
+            }*/
         }
     }
 }

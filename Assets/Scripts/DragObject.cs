@@ -20,6 +20,7 @@ public class DragObject : MonoBehaviour
 		Vector3 dir = this.transform.TransformDirection(Vector3.up);
 
 		Debug.DrawRay(this.transform.position, dir * 10, Color.red);
+
 		RaycastHit[] hits = Physics.RaycastAll(this.transform.position, dir, 5).OrderBy(h => h.distance).ToArray(); ;
 
 		canDrag = true;

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.UIElements;
 
 public class MovableObjs : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class MovableObjs : MonoBehaviour
     public Vector3 relativePosition, distance, targetPosition;
     public bool canMove = false, havePlayer = false;
     public Vector3 dir, dir1, dirD, pos;
-    public float dist = 100f;
+    public float dist = 2.5f, playerDist = 5f;
     public RaycastHit[] hit, hit1, hits, hits1;
     public RaycastHit hitM;
     public Ray ray;
@@ -132,19 +130,6 @@ public class MovableObjs : MonoBehaviour
         
         if (canDrag)
         {
-            if (lefR)
-            {
-                transform.position = new Vector3(cursorPosition.x, transform.position.y, transform.position.z);
-                playerMov.transform.position = new Vector3(gameObject.transform.position.x - distance.x, playerMov.transform.position.y, playerMov.transform.position.z);
-                nonTileDragObj.transform.position = new Vector3(cursorPosition.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);
-            }
-            else if (forB)
-            {
-                transform.position = new Vector3(transform.position.x, transform.position.y, cursorPosition.z);
-                playerMov.transform.position = new Vector3(playerMov.transform.position.x, playerMov.transform.position.y, gameObject.transform.position.z - distance.z);
-                nonTileDragObj.transform.position = new Vector3(transform.position.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, cursorPosition.z);
-            }
-
             dirD = this.transform.TransformDirection(Vector3.down);
             hits = Physics.RaycastAll(this.transform.position, dirD, 2.5f).OrderBy(h => h.distance).ToArray();
 
@@ -161,9 +146,22 @@ public class MovableObjs : MonoBehaviour
                         {
                             break;
                         }
-                        else if (hit[j].collider.transform.parent.name == "NonTileParent")
+                        else if (hit[j].collider.transform.parent.name == "OuterRegion")
                         {
-                            transform.position = new Vector3(hit[j].collider.transform.position.x, transform.position.y, hit[j].collider.transform.position.z);
+                            if (lefR)
+                            {
+                                if (cursorPosition.x > hits[i].collider.transform.position.x)
+                                {
+                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                }
+                            }
+                            else if (forB)
+                            {
+                                if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                {
+                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                }
+                            }
                         }
                     }
 
@@ -173,40 +171,39 @@ public class MovableObjs : MonoBehaviour
                         {
                             break;
                         }
-                        else if (hit1[j].collider.transform.parent.name == "NonTileParent")
+                        else if (hit1[j].collider.transform.parent.name == "OuterRegion")
                         {
-                            transform.position = new Vector3(hit[j].collider.transform.position.x, transform.position.y, hit[j].collider.transform.position.z);
+                            if (lefR)
+                            {
+                                if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                {
+                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                }
+                            }
+                            else if (forB)
+                            {
+                                if (cursorPosition.z < hits[i].collider.transform.position.z)
+                                {
+                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                }
+                            }
                         }
                     }
 
                 }
             }
-
-            /*if (dir != null && dir1 != null)
+            if (lefR)
             {
-                dirD = this.transform.TransformDirection(Vector3.down);
-                hit = Physics.RaycastAll(pos, dir, dist).OrderBy(h => h.distance).ToArray();
-                hit1 = Physics.RaycastAll(pos, dir1, dist).OrderBy(h => h.distance).ToArray();
-                hits = Physics.RaycastAll(this.transform.position, dirD, dist).OrderBy(h => h.distance).ToArray();
-
-                Debug.DrawRay(pos, dir * dist, Color.red);
-                Debug.DrawRay(pos, dir1 * dist, Color.green);
-                Debug.DrawRay(this.transform.position, dirD * dist, Color.magenta);
-
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    if (hits[i].collider.transform.parent.name == "TileParent")
-                    {
-                        if (hit.Length > 0 && hit1.Length > 0)
-                        {
-                            if (hits[i].collider.name == hit[hit.Length - 2].collider.name || hits[i].collider.name == hit1[hit1.Length - 2].collider.name)
-                            {
-                                this.transform.position = hits[i].collider.transform.position;
-                            }
-                        }
-                    }
-                }
-            }*/
+                transform.position = new Vector3(cursorPosition.x, transform.position.y, transform.position.z);
+                playerMov.transform.position = new Vector3(gameObject.transform.position.x - distance.x, playerMov.transform.position.y, playerMov.transform.position.z);
+                nonTileDragObj.transform.position = new Vector3(cursorPosition.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);
+            }
+            else if (forB)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, cursorPosition.z);
+                playerMov.transform.position = new Vector3(playerMov.transform.position.x, playerMov.transform.position.y, gameObject.transform.position.z - distance.z);
+                nonTileDragObj.transform.position = new Vector3(transform.position.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, cursorPosition.z);
+            }
         }
     }
 }

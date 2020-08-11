@@ -901,6 +901,7 @@ MonoBehaviour:
   dirD: {x: 0, y: 0, z: 0}
   pos: {x: 0, y: 0, z: 0}
   dist: 100
+  playerDist: 5
   cam: {fileID: 963194227}
   hitColliders: []
   rb: {fileID: 0}

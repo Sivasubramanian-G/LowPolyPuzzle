@@ -5,23 +5,24 @@ using UnityEngine;
 public class MovableObjs : MonoBehaviour
 {
     public PlayerMovements playerMov = null;
-    public Vector3 relativePosition, distance, targetPosition;
-    public bool canMove = false, havePlayer = false;
-    public Vector3 dir, dir1, dirD, pos;
-    public float dist = 2.5f, playerDist = 5f;
-    public RaycastHit[] hit, hit1, hits, hits1;
-    public RaycastHit hitM;
-    public Ray ray;
+
     public Camera cam = null;
-    public Collider[] hitColliders;
-    public Rigidbody rb;
+
+    public GameObject nonTileDragObj = null;
+
     public float speed = 1f;
 
+    [HideInInspector]
+    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD;
 
-    private Vector3 screenPoint;
-    private Vector3 offset;
-    public GameObject nonTileDragObj = null;
-    public bool canDrag = false, lefR = false, forB = false;
+    [HideInInspector]
+    public RaycastHit[] hit, hit1, hits;
+
+    [HideInInspector]
+    public Collider[] hitColliders;
+
+    [HideInInspector]
+    public bool canDrag = false, lefR = false, forB = false, canMove = false;
 
     void Start()
     {
@@ -36,7 +37,6 @@ public class MovableObjs : MonoBehaviour
 
     void Update()
     {
-        Vector3 dir = this.transform.TransformDirection(Vector3.up);
         hitColliders = Physics.OverlapSphere(this.transform.position, 2.5f);
 
         foreach (var hitCollider in hitColliders)
@@ -49,11 +49,35 @@ public class MovableObjs : MonoBehaviour
                 {
                     lefR = true;
                     forB = false;
+
+                    if (relativePosition.x > 0.0)
+                    {
+                        dir = this.transform.TransformDirection(Vector3.right);
+                        dir1 = this.transform.TransformDirection(Vector3.left);
+                    }
+                    else if (relativePosition.x < 0.0)
+                    {
+                        dir = this.transform.TransformDirection(Vector3.left);
+                        dir1 = this.transform.TransformDirection(Vector3.right);
+                    }
+
                 }
                 else if (Math.Abs(relativePosition.z) > Math.Abs(relativePosition.x))
                 {
                     lefR = false;
                     forB = true;
+
+                    if (relativePosition.z > 0.0)
+                    {
+                        dir = this.transform.TransformDirection(Vector3.forward);
+                        dir1 = this.transform.TransformDirection(Vector3.back);
+                    }
+                    else if (relativePosition.z < 0.0)
+                    {
+                        dir = this.transform.TransformDirection(Vector3.back);
+                        dir1 = this.transform.TransformDirection(Vector3.forward);
+                    }
+
                 }
             }
         }
@@ -102,8 +126,8 @@ public class MovableObjs : MonoBehaviour
         distance = this.transform.position - playerMov.transform.position;
         playerMov.canMove = false;
         playerMov.DestroyInsts();
-        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
+        offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
         if (!canDrag)
         {
             playerMov.InstObjs();
@@ -113,20 +137,12 @@ public class MovableObjs : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (lefR)
-        {
-            dir = this.transform.TransformDirection(Vector3.right);
-            dir1 = this.transform.TransformDirection(Vector3.left);
-        }
-        else if (forB)
-        {
-            dir = this.transform.TransformDirection(Vector3.forward);
-            dir1 = this.transform.TransformDirection(Vector3.back);
-        }
-
         playerMov.canClick = false;
         Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
+        Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;
+
+        Debug.DrawRay(this.transform.position, dir * 5f, Color.red);
+        Debug.DrawRay(this.transform.position, dir1 * 2.5f, Color.green);
         
         if (canDrag)
         {
@@ -137,29 +153,51 @@ public class MovableObjs : MonoBehaviour
             {
                 if (hits[i].collider.transform.parent.name == "TileParent")
                 {
-                    hit = Physics.RaycastAll(hits[i].collider.transform.position, dir, 2.5f).OrderBy(h => h.distance).ToArray();
-                    hit1 = Physics.RaycastAll(hits[i].collider.transform.position, dir1, 2.5f).OrderBy(h => h.distance).ToArray();
+                    float dist = hits[i].collider.bounds.size.x;
+                    hit = Physics.RaycastAll(hits[i].collider.transform.position, dir, dist * 2f).OrderBy(h => h.distance).ToArray();
+                    hit1 = Physics.RaycastAll(hits[i].collider.transform.position, dir1, dist).OrderBy(h => h.distance).ToArray();
 
                     for (int j = 0; j < hit.Length; j++)
                     {
                         if (hit[j].collider.transform.parent.name == "TileParent")
                         {
-                            break;
+                            continue;
                         }
                         else if (hit[j].collider.transform.parent.name == "OuterRegion")
                         {
                             if (lefR)
                             {
-                                if (cursorPosition.x > hits[i].collider.transform.position.x)
+                                if (dir == this.transform.TransformDirection(Vector3.right))
                                 {
-                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                    if (cursorPosition.x > hits[i].collider.transform.position.x)
+                                    {
+                                        cursorPosition.x = hits[i].collider.transform.position.x;
+                                    }
                                 }
+                                else
+                                {
+                                    if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                    {
+                                        cursorPosition.x = hits[i].collider.transform.position.x;
+                                    }
+                                }
+                                
                             }
                             else if (forB)
                             {
-                                if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                if (dir == this.transform.TransformDirection(Vector3.forward))
                                 {
-                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                    if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                    {
+                                        cursorPosition.z = hits[i].collider.transform.position.z;
+                                    }
+                                }
+                                else
+                                {
+                                    if (cursorPosition.z < hits[i].collider.transform.position.z)
+                                    {
+                                        cursorPosition.z = hits[i].collider.transform.position.z;
+                                    }
                                 }
                             }
                         }
@@ -169,22 +207,42 @@ public class MovableObjs : MonoBehaviour
                     {
                         if (hit1[j].collider.transform.parent.name == "TileParent")
                         {
-                            break;
+                            continue;
                         }
                         else if (hit1[j].collider.transform.parent.name == "OuterRegion")
                         {
                             if (lefR)
                             {
-                                if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                if (dir1 == this.transform.TransformDirection(Vector3.right))
                                 {
-                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                    if (cursorPosition.x > hits[i].collider.transform.position.x)
+                                    {
+                                        cursorPosition.x = hits[i].collider.transform.position.x;
+                                    }
+                                }
+                                else
+                                {
+                                    if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                    {
+                                        cursorPosition.x = hits[i].collider.transform.position.x;
+                                    }
                                 }
                             }
                             else if (forB)
                             {
-                                if (cursorPosition.z < hits[i].collider.transform.position.z)
+                                if (dir1 == this.transform.TransformDirection(Vector3.forward))
                                 {
-                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                    if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                    {
+                                        cursorPosition.z = hits[i].collider.transform.position.z;
+                                    }
+                                }
+                                else
+                                {
+                                    if (cursorPosition.z < hits[i].collider.transform.position.z)
+                                    {
+                                        cursorPosition.z = hits[i].collider.transform.position.z;
+                                    }
                                 }
                             }
                         }

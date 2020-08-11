@@ -3,11 +3,14 @@ using UnityEngine;
 
 public class DragObject : MonoBehaviour
 {
-	private Vector3 screenPoint;
-	private Vector3 offset;
-	private Vector3 initialPos;
 	public PlayerMovements playerMov = null;
+
 	public GameObject nonTileDragObj = null;
+
+	[HideInInspector]
+	private Vector3 screenPoint, offset, initialPos;
+
+	[HideInInspector]
 	public bool canDrag = true;
 
 	void Start()

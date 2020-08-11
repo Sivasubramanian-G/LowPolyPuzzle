@@ -10,15 +10,8 @@ public class PlayerMovements : MonoBehaviour
     
     public Rigidbody rb;
 
-    public bool canMove = true;
-    public bool start;
-    public bool runAnim = false;
-    public bool canClick = true;
-    public bool canInstance = true;
-
     public float dist = 100;
     public float speed = 8;
-    public float smooth;
 
     public GameObject sphere = null;
 
@@ -26,26 +19,25 @@ public class PlayerMovements : MonoBehaviour
     public RaycastHit[] hitF, hitB, hitL, hitR;
     [HideInInspector]
     public Ray ray;
+    [HideInInspector]
     public RaycastHit hitM;
 
     [HideInInspector]
-    public Vector3 targetPosition;
-    [HideInInspector]
-    public Vector3 relativePosition;
-
-    [HideInInspector]
-    public Vector3 pos, guidePos;
-    [HideInInspector]
-    public Vector3 dirF, dirB, dirL, dirR;
+    public Vector3 targetPosition, relativePosition, pos, guidePos, dirF, dirB, dirL, dirR;
 
     [HideInInspector]
     public Quaternion targetRotation;
+
+    [HideInInspector]
+    public bool canMove = true, start = true, runAnim = false, canClick = true, canInstance = true;
+
+    [HideInInspector]
+    public float smooth;
 
     private void Start()
     {
         start = true;
         targetRotation = this.transform.rotation;
-        //targetPosition = this.transform.position;
         rb = GetComponent<Rigidbody>();
         anim.speed = 5f;
         
@@ -77,7 +69,6 @@ public class PlayerMovements : MonoBehaviour
     {
         targetPosition = this.transform.position;
         ray = new Ray(this.transform.position, this.transform.TransformDirection(Vector3.back));
-        //targetPosition = this.transform.position;
         Vector3 dir = this.transform.TransformDirection(Vector3.back);
         Debug.DrawRay(this.transform.position, dir * 2.5f, Color.magenta);
         RaycastHit hit;
@@ -88,7 +79,6 @@ public class PlayerMovements : MonoBehaviour
             {
                 targetPosition = hit.collider.transform.position;
                 targetPosition.y = this.transform.position.y;
-                //ray = cam.WorldToScreenPoint(targetPosition);
                 runAnim = true;
                 canMove = true;
             }

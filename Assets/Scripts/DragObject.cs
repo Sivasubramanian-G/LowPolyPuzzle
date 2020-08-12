@@ -7,8 +7,10 @@ public class DragObject : MonoBehaviour
 
 	public GameObject nonTileDragObj = null;
 
+	public float maxHeight = 3f;
+
 	[HideInInspector]
-	private Vector3 screenPoint, offset, initialPos;
+	public Vector3 screenPoint, offset, initialPos;
 
 	[HideInInspector]
 	public bool canDrag = true;
@@ -58,9 +60,9 @@ public class DragObject : MonoBehaviour
 		playerMov.canClick = false;
 		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 		Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
-		if (cursorPosition.y > 3)
+		if (cursorPosition.y > maxHeight)
         {
-			cursorPosition.y = 3;
+			cursorPosition.y = maxHeight;
 			playerMov.canClick = true;
         }
 		else if (cursorPosition.y < initialPos.y)

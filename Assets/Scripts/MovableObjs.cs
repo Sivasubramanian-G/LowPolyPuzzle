@@ -13,7 +13,7 @@ public class MovableObjs : MonoBehaviour
     public float speed = 1f;
 
     [HideInInspector]
-    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD;
+    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD, mousePosition;
 
     [HideInInspector]
     public RaycastHit[] hit, hit1, hits;
@@ -137,6 +137,7 @@ public class MovableObjs : MonoBehaviour
 
     void OnMouseDrag()
     {
+        
         playerMov.canClick = false;
         Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
         Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;
@@ -252,6 +253,7 @@ public class MovableObjs : MonoBehaviour
             }
             if (lefR)
             {
+                
                 transform.position = new Vector3(cursorPosition.x, transform.position.y, transform.position.z);
                 playerMov.transform.position = new Vector3(gameObject.transform.position.x - distance.x, playerMov.transform.position.y, playerMov.transform.position.z);
                 nonTileDragObj.transform.position = new Vector3(cursorPosition.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);

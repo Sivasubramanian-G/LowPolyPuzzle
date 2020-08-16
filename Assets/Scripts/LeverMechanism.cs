@@ -12,7 +12,7 @@ public class LeverMechanism : MonoBehaviour
 
     public float speed = 8;
 
-    public bool start = true, havePlayer = false;
+    public bool havePlayer = false;
 
     public Camera cam = null;
 
@@ -24,6 +24,11 @@ public class LeverMechanism : MonoBehaviour
     public Ray ray;
     public RaycastHit hit;
 
+    void Start()
+    {
+        targetPosition = new Vector3(leverChange.transform.position.x, leverChange.GetComponent<DragObject>().initialPos.y, leverChange.transform.position.z);
+    }
+
     void Update()
     {
         hitColliders = Physics.OverlapSphere(this.transform.position, 2.5f);
@@ -32,11 +37,6 @@ public class LeverMechanism : MonoBehaviour
         {
             if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop"))
             {
-                if (start)
-                {
-                    targetPosition = new Vector3(leverChange.transform.position.x, leverChange.GetComponent<DragObject>().initialPos.y, leverChange.transform.position.z);
-                    start = false;
-                }
                 if (Input.GetMouseButtonDown(0))
                 {
                     ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -44,9 +44,9 @@ public class LeverMechanism : MonoBehaviour
                     {
                         if (hit.collider != null)
                         {
+                            havePlayer = true;
                             if (hit.collider.transform.parent.name == "Levers")
                             {
-                                havePlayer = true;
                                 if (targetPosition.y == leverChange.GetComponent<DragObject>().initialPos.y)
                                 {
                                     targetPosition.y = leverChange.GetComponent<DragObject>().maxHeight;
@@ -56,17 +56,17 @@ public class LeverMechanism : MonoBehaviour
                                     targetPosition.y = leverChange.GetComponent<DragObject>().initialPos.y;
                                 }
                             }
-                            else
-                            {
-                                havePlayer = false;
-                            }
+                        }
+                        else
+                        {
+                            havePlayer = false;
                         }
                     }
                 }
             }
         }
 
-        if (!start && havePlayer)
+        if (havePlayer)
         {
             leverChange.transform.position = Vector3.Lerp(leverChange.transform.position, new Vector3(leverChange.transform.position.x, targetPosition.y, leverChange.transform.position.z), speed * Time.deltaTime);
             leverChangeNonObj.transform.position = Vector3.Lerp(leverChangeNonObj.transform.position, new Vector3(leverChange.transform.position.x, targetPosition.y - leverChange.GetComponent<Collider>().bounds.size.y * 1.5f, leverChange.transform.position.z), speed * Time.deltaTime);

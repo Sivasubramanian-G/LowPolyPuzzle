@@ -7,6 +7,8 @@ public class DragObject : MonoBehaviour
 
 	public GameObject nonTileDragObj = null;
 
+	public Camera cam = null;
+
 	public float maxHeight = 3f;
 
 	[HideInInspector]
@@ -51,15 +53,15 @@ public class DragObject : MonoBehaviour
 		playerMov.canMove = false;
 		playerMov.canClick = false;
 		playerMov.DestroyInsts();
-		screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-		offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+		screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
+		offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 	}
 
 	void OnMouseDrag()
 	{
 		playerMov.canClick = false;
 		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-		Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
+		Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;
 		if (cursorPosition.y > maxHeight)
         {
 			cursorPosition.y = maxHeight;

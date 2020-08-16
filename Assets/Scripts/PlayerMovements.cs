@@ -15,6 +15,8 @@ public class PlayerMovements : MonoBehaviour
 
     public GameObject sphere = null;
 
+    public Puzzle puzzle = null;
+
     [HideInInspector]
     public RaycastHit[] hitF, hitB, hitL, hitR;
     [HideInInspector]
@@ -29,7 +31,7 @@ public class PlayerMovements : MonoBehaviour
     public Quaternion targetRotation;
 
     [HideInInspector]
-    public bool canMove = true, start = true, runAnim = false, canClick = true, canInstance = true;
+    public bool canMove = true, start = true, runAnim = false, canClick = true, canInstance = true, haveKey = false;
 
     [HideInInspector]
     public float smooth;
@@ -67,6 +69,8 @@ public class PlayerMovements : MonoBehaviour
 
     void OnEnable()
     {
+        puzzle.enabled = false;
+        puzzle.cam.enabled = false;
         targetPosition = this.transform.position;
         ray = new Ray(this.transform.position, this.transform.TransformDirection(Vector3.back));
         Vector3 dir = this.transform.TransformDirection(Vector3.back);

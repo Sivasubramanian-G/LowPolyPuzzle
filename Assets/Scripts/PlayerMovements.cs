@@ -13,7 +13,7 @@ public class PlayerMovements : MonoBehaviour
     public float dist = 100;
     public float speed = 8;
 
-    public GameObject sphere = null;
+    public GameObject pathHighlight = null;
 
     public Puzzle puzzle = null;
 
@@ -121,7 +121,7 @@ public class PlayerMovements : MonoBehaviour
                 {
                     try
                     {
-                        if (hitM.collider.transform.parent.name == "TileParent" && hitM.transform.Find("Sphere(Clone)") != null)
+                        if (hitM.collider.transform.parent.name == "TileParent" && hitM.transform.Find("PathHighlight(Clone)") != null)
                         {
                             canInstance = true;
                             start = false;
@@ -214,7 +214,7 @@ public class PlayerMovements : MonoBehaviour
                 else if (hit.collider.transform.parent.name == "TileParent")
                 {
                     guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
                 }
             }
 
@@ -228,7 +228,7 @@ public class PlayerMovements : MonoBehaviour
                 else if (hit.collider.transform.parent.name == "TileParent")
                 {
                     guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
                 }
             }
 
@@ -242,7 +242,7 @@ public class PlayerMovements : MonoBehaviour
                 else if (hit.collider.transform.parent.name == "TileParent")
                 {
                     guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
                 }
             }
 
@@ -256,7 +256,7 @@ public class PlayerMovements : MonoBehaviour
                 else if (hit.collider.transform.parent.name == "TileParent")
                 {
                     guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                    Instantiate(sphere, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
                 }
             }
             canInstance = false;
@@ -267,30 +267,30 @@ public class PlayerMovements : MonoBehaviour
     {
         for (int i = 0; i < hitF.Length; i++)
         {
-            if (hitF[i].transform.Find("Sphere(Clone)") != null)
+            if (hitF[i].transform.Find("PathHighlight(Clone)") != null)
             {
-                Destroy(hitF[i].transform.Find("Sphere(Clone)").gameObject);
+                Destroy(hitF[i].transform.Find("PathHighlight(Clone)").gameObject);
             }
         }
         for (int i = 0; i < hitB.Length; i++)
         {
-            if (hitB[i].transform.Find("Sphere(Clone)") != null)
+            if (hitB[i].transform.Find("PathHighlight(Clone)") != null)
             {
-                Destroy(hitB[i].transform.Find("Sphere(Clone)").gameObject);
+                Destroy(hitB[i].transform.Find("PathHighlight(Clone)").gameObject);
             }
         }
         for (int i = 0; i < hitL.Length; i++)
         {
-            if (hitL[i].transform.Find("Sphere(Clone)") != null)
+            if (hitL[i].transform.Find("PathHighlight(Clone)") != null)
             {
-                Destroy(hitL[i].transform.Find("Sphere(Clone)").gameObject);
+                Destroy(hitL[i].transform.Find("PathHighlight(Clone)").gameObject);
             }
         }
         for (int i = 0; i < hitR.Length; i++)
         {
-            if (hitR[i].transform.Find("Sphere(Clone)") != null)
+            if (hitR[i].transform.Find("PathHighlight(Clone)") != null)
             {
-                Destroy(hitR[i].transform.Find("Sphere(Clone)").gameObject);
+                Destroy(hitR[i].transform.Find("PathHighlight(Clone)").gameObject);
             }
         }
     }

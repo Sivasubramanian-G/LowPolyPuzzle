@@ -45,7 +45,8 @@ public class DragObject : MonoBehaviour
     {
 		playerMov.canMove = true;
 		playerMov.canClick = true;
-		playerMov.InstObjs();
+		//playerMov.InstObjs();
+		playerMov.canInstance = true;
 	}
 
 	void OnMouseDown()

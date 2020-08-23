@@ -22,10 +22,10 @@ public class DoorObjs : MonoBehaviour
             {
                 if (playerMov.haveKey)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y, transform.position.z);
-                    nonTileDoorObj.transform.position = new Vector3(nonTileDoorObj.transform.position.x, nonTileDoorObj.transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y, nonTileDoorObj.transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, transform.position.z);
+                    nonTileDoorObj.transform.position = new Vector3(nonTileDoorObj.transform.position.x, nonTileDoorObj.transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, nonTileDoorObj.transform.position.z);
                     playerMov.DestroyInsts();
-                    playerMov.InstObjs();
+                    playerMov.canInstance = true;
                 }
             }
         }

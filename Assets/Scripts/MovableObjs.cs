@@ -12,8 +12,10 @@ public class MovableObjs : MonoBehaviour
 
     public float speed = 1f;
 
+    public Animator anim = null;
+
     [HideInInspector]
-    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD, mousePosition;
+    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD;
 
     [HideInInspector]
     public RaycastHit[] hit, hit1, hits;
@@ -253,7 +255,6 @@ public class MovableObjs : MonoBehaviour
             }
             if (lefR)
             {
-                
                 transform.position = new Vector3(cursorPosition.x, transform.position.y, transform.position.z);
                 playerMov.transform.position = new Vector3(gameObject.transform.position.x - distance.x, playerMov.transform.position.y, playerMov.transform.position.z);
                 nonTileDragObj.transform.position = new Vector3(cursorPosition.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);

@@ -43,40 +43,49 @@ public class DragObject : MonoBehaviour
 
 	void OnMouseUp()
     {
-		playerMov.canMove = true;
-		playerMov.canClick = true;
-		//playerMov.InstObjs();
-		playerMov.canInstance = true;
+		if (!PauseMenu.gamePaused)
+        {
+			playerMov.canMove = true;
+			playerMov.canClick = true;
+			//playerMov.InstObjs();
+			playerMov.canInstance = true;
+		}
 	}
 
 	void OnMouseDown()
 	{
-		playerMov.canMove = false;
-		playerMov.canClick = false;
-		playerMov.DestroyInsts();
-		screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
-		offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+		if (!PauseMenu.gamePaused)
+        {
+			playerMov.canMove = false;
+			playerMov.canClick = false;
+			playerMov.DestroyInsts();
+			screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
+			offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+		}
 	}
 
 	void OnMouseDrag()
 	{
-		playerMov.canClick = false;
-		Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-		Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;
-		if (cursorPosition.y > maxHeight)
+		if (!PauseMenu.gamePaused)
         {
-			cursorPosition.y = maxHeight;
-			playerMov.canClick = true;
-        }
-		else if (cursorPosition.y < initialPos.y)
-        {
-			cursorPosition.y = initialPos.y;
-			playerMov.canClick = true;
-		}
-		if (canDrag)
-        {
-			transform.position = new Vector3(transform.position.x, cursorPosition.y, transform.position.z);
-			nonTileDragObj.transform.position = new Vector3(transform.position.x, cursorPosition.y - this.GetComponent<Collider>().bounds.size.y*1.5f, transform.position.z);
+			playerMov.canClick = false;
+			Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+			Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;
+			if (cursorPosition.y > maxHeight)
+			{
+				cursorPosition.y = maxHeight;
+				playerMov.canClick = true;
+			}
+			else if (cursorPosition.y < initialPos.y)
+			{
+				cursorPosition.y = initialPos.y;
+				playerMov.canClick = true;
+			}
+			if (canDrag)
+			{
+				transform.position = new Vector3(transform.position.x, cursorPosition.y, transform.position.z);
+				nonTileDragObj.transform.position = new Vector3(transform.position.x, cursorPosition.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);
+			}
 		}
 	}
 }

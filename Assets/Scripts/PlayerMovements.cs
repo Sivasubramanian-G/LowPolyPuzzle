@@ -49,7 +49,7 @@ public class PlayerMovements : MonoBehaviour
     {
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 20 * smooth * Time.deltaTime);
 
-        if (canMove && !start)
+        if (canMove && !start && !PauseMenu.gamePaused)
         {
             if (this.transform.position != targetPosition && runAnim)
             {
@@ -108,12 +108,12 @@ public class PlayerMovements : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !PauseMenu.gamePaused)
         {
             ray = cam.ScreenPointToRay(Input.mousePosition);
         }
 
-        if (Input.GetMouseButtonUp(0) && canClick)
+        if (Input.GetMouseButtonUp(0) && canClick && !PauseMenu.gamePaused)
         {
             if (Physics.Raycast(ray, out hitM, dist))
             {

@@ -37,7 +37,7 @@ public class LeverMechanism : MonoBehaviour
         {
             if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop"))
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && !PauseMenu.gamePaused)
                 {
                     ray = cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out hit, 100f))

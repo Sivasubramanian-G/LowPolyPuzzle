@@ -22,7 +22,7 @@ public class BlockEvent : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (OnBlockPressed != null)
+        if (OnBlockPressed != null && !PauseMenu.gamePaused)
         {
             OnBlockPressed(this);
         }

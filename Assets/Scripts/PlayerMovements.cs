@@ -108,12 +108,18 @@ public class PlayerMovements : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && !PauseMenu.gamePaused)
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began && !PauseMenu.gamePaused)
         {
             ray = cam.ScreenPointToRay(Input.mousePosition);
         }
 
-        if (Input.GetMouseButtonUp(0) && canClick && !PauseMenu.gamePaused)
+        /*if (Input.GetMouseButtonDown(0) && !PauseMenu.gamePaused)
+        {
+            ray = cam.ScreenPointToRay(Input.mousePosition);
+        }*/
+
+        //if (Input.GetMouseButtonUp(0) && canClick && !PauseMenu.gamePaused)
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && !PauseMenu.gamePaused)
         {
             if (Physics.Raycast(ray, out hitM, dist))
             {

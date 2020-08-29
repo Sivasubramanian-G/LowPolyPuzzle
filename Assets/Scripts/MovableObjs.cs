@@ -105,6 +105,7 @@ public class MovableObjs : MonoBehaviour
             if (canDrag)
             {
                 playerMov.InstObjs();
+                anim.SetBool("RunLoopStop", true);
             }
             canDrag = false;
             targetPosition = this.transform.position;
@@ -138,6 +139,11 @@ public class MovableObjs : MonoBehaviour
             if (!canDrag)
             {
                 playerMov.InstObjs();
+            }
+            else
+            {
+                anim.Play("RunStart");
+                anim.SetBool("RunLoopStop", false);
             }
             playerMov.GetComponent<PlayerMovements>().enabled = false;
         }

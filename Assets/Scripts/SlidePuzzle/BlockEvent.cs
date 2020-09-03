@@ -20,6 +20,17 @@ public class BlockEvent : MonoBehaviour
         StartCoroutine(AnimateMove(target, duration));
     }
 
+    /*void Update()
+    {
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended)
+        {
+            if (OnBlockPressed != null && !PauseMenu.gamePaused)
+            {
+                OnBlockPressed(this);
+            }
+        }
+    }*/
+
     void OnMouseDown()
     {
         if (OnBlockPressed != null && !PauseMenu.gamePaused)

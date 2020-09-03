@@ -26,9 +26,9 @@ public class PuzzleObjs : MonoBehaviour
         {
             if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop"))
             {
-                if (Input.GetMouseButtonDown(0) && !PauseMenu.gamePaused)
+                if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began && !PauseMenu.gamePaused)
                 {
-                    ray = cam.ScreenPointToRay(Input.mousePosition);
+                    ray = cam.ScreenPointToRay(Input.touches[0].position);
                     if (Physics.Raycast(ray, out hit, 100f))
                     {
                         if (hit.collider != null)

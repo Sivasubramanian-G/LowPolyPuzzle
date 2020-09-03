@@ -31,7 +31,7 @@ public class PlayerMovements : MonoBehaviour
     public Quaternion targetRotation;
 
     [HideInInspector]
-    public bool canMove = true, start = true, runAnim = false, canClick = true, canInstance = true, haveKey = false;
+    public bool canMove = true, start = true, runAnim = false, canClick = true, canInstance = true, haveKey = false, hitTP = false;
 
     [HideInInspector]
     public float smooth;
@@ -108,18 +108,14 @@ public class PlayerMovements : MonoBehaviour
             }
         }
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began && !PauseMenu.gamePaused)
+
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
         {
-            ray = cam.ScreenPointToRay(Input.mousePosition);
+            Debug.Log("PlayerMov ray");
+            ray = cam.ScreenPointToRay(Input.touches[0].position);
         }
 
-        /*if (Input.GetMouseButtonDown(0) && !PauseMenu.gamePaused)
-        {
-            ray = cam.ScreenPointToRay(Input.mousePosition);
-        }*/
-
-        //if (Input.GetMouseButtonUp(0) && canClick && !PauseMenu.gamePaused)
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && !PauseMenu.gamePaused)
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended)
         {
             if (Physics.Raycast(ray, out hitM, dist))
             {

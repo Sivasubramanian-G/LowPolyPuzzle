@@ -44,7 +44,6 @@ public class LeverMechanism : MonoBehaviour
                     {
                         if (hit.collider != null)
                         {
-                            
                             if (hit.collider.transform.parent.name == "Levers")
                             {
                                 canMove = true;

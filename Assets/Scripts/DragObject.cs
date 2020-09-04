@@ -15,7 +15,7 @@ public class DragObject : MonoBehaviour
 	public Vector3 screenPoint, offset, initialPos;
 
 	[HideInInspector]
-	public bool canDrag = true, canTouchDrag = false;
+	public bool canDrag = true, isDragObj = false;
 
 	void Start()
     {
@@ -42,24 +42,27 @@ public class DragObject : MonoBehaviour
 
 		if (Input.touchCount > 0 && !PauseMenu.gamePaused && canDrag)
         {
-			if (Input.touches[0].phase == TouchPhase.Began && canTouchDrag)
+			if (Input.touches[0].phase == TouchPhase.Began)
             {
 				Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
 				if (Physics.Raycast(ray, out RaycastHit hit, 100))
 				{
 					if (hit.collider != null && hit.collider.transform.name == "Cube (8)")
                     {
-						Debug.Log("DragObj ray");
-						canTouchDrag = true;
+						isDragObj = true;
+						playerMov.canMove = false;
+						playerMov.canClick = false;
+						playerMov.DestroyInsts();
+						screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
+						offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, screenPoint.z));
+					}
+					else
+                    {
+						isDragObj = false;
                     }
 				}
-				playerMov.canMove = false;
-				playerMov.canClick = false;
-				playerMov.DestroyInsts();
-				screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
-				offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, screenPoint.z));
 			}
-			if (Input.touches[0].phase == TouchPhase.Moved && canTouchDrag)
+			if (Input.touches[0].phase == TouchPhase.Moved && isDragObj)
             {
 				
 				playerMov.canClick = false;
@@ -82,7 +85,7 @@ public class DragObject : MonoBehaviour
 				}
 				
 			}
-			if (Input.touches[0].phase == TouchPhase.Ended && canTouchDrag)
+			if (Input.touches[0].phase == TouchPhase.Ended && isDragObj)
             {
 				playerMov.canMove = true;
 				playerMov.canClick = true;
@@ -93,52 +96,4 @@ public class DragObject : MonoBehaviour
 		}
 
 	}
-
-	/*void OnMouseUp()
-    {
-		if (!PauseMenu.gamePaused)
-        {
-			playerMov.canMove = true;
-			playerMov.canClick = true;
-			//playerMov.InstObjs();
-			playerMov.canInstance = true;
-		}
-	}
-
-	void OnMouseDown()
-	{
-		if (!PauseMenu.gamePaused)
-        {
-			playerMov.canMove = false;
-			playerMov.canClick = false;
-			playerMov.DestroyInsts();
-			screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
-			offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-		}
-	}
-
-	void OnMouseDrag()
-	{
-		if (!PauseMenu.gamePaused)
-        {
-			playerMov.canClick = false;
-			Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-			Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;
-			if (cursorPosition.y > maxHeight)
-			{
-				cursorPosition.y = maxHeight;
-				playerMov.canClick = true;
-			}
-			else if (cursorPosition.y < initialPos.y)
-			{
-				cursorPosition.y = initialPos.y;
-				playerMov.canClick = true;
-			}
-			if (canDrag)
-			{
-				transform.position = new Vector3(transform.position.x, cursorPosition.y, transform.position.z);
-				nonTileDragObj.transform.position = new Vector3(transform.position.x, cursorPosition.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);
-			}
-		}
-	}*/
 }

@@ -111,7 +111,6 @@ public class PlayerMovements : MonoBehaviour
 
         if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
         {
-            Debug.Log("PlayerMov ray");
             ray = cam.ScreenPointToRay(Input.touches[0].position);
         }
 

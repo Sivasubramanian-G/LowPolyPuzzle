@@ -39,55 +39,56 @@ public class MovableObjs : MonoBehaviour
 
     void Update()
     {
-        hitColliders = Physics.OverlapSphere(this.transform.position, 2.5f);
-
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop"))
-            {
-                canDrag = true;
-                relativePosition = playerMov.CalRelPos(this.transform, hitCollider.transform.position);
-                if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.z))
-                {
-                    lefR = true;
-                    forB = false;
-
-                    if (relativePosition.x > 0.0)
-                    {
-                        dir = this.transform.TransformDirection(Vector3.right);
-                        dir1 = this.transform.TransformDirection(Vector3.left);
-                    }
-                    else if (relativePosition.x < 0.0)
-                    {
-                        dir = this.transform.TransformDirection(Vector3.left);
-                        dir1 = this.transform.TransformDirection(Vector3.right);
-                    }
-
-                }
-                else if (Math.Abs(relativePosition.z) > Math.Abs(relativePosition.x))
-                {
-                    lefR = false;
-                    forB = true;
-
-                    if (relativePosition.z > 0.0)
-                    {
-                        dir = this.transform.TransformDirection(Vector3.forward);
-                        dir1 = this.transform.TransformDirection(Vector3.back);
-                    }
-                    else if (relativePosition.z < 0.0)
-                    {
-                        dir = this.transform.TransformDirection(Vector3.back);
-                        dir1 = this.transform.TransformDirection(Vector3.forward);
-                    }
-
-                }
-            }
-        }
-
         if (Input.touchCount > 0 && !PauseMenu.gamePaused)
         {
             if (Input.touches[0].phase == TouchPhase.Began)
             {
+                hitColliders = Physics.OverlapSphere(this.transform.position, 2.5f);
+                canDrag = false;
+
+                foreach (var hitCollider in hitColliders)
+                {
+                    if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop"))
+                    {
+                        canDrag = true;
+                        relativePosition = playerMov.CalRelPos(this.transform, hitCollider.transform.position);
+                        if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.z))
+                        {
+                            lefR = true;
+                            forB = false;
+
+                            if (relativePosition.x > 0.0)
+                            {
+                                dir = this.transform.TransformDirection(Vector3.right);
+                                dir1 = this.transform.TransformDirection(Vector3.left);
+                            }
+                            else if (relativePosition.x < 0.0)
+                            {
+                                dir = this.transform.TransformDirection(Vector3.left);
+                                dir1 = this.transform.TransformDirection(Vector3.right);
+                            }
+
+                        }
+                        else if (Math.Abs(relativePosition.z) > Math.Abs(relativePosition.x))
+                        {
+                            lefR = false;
+                            forB = true;
+
+                            if (relativePosition.z > 0.0)
+                            {
+                                dir = this.transform.TransformDirection(Vector3.forward);
+                                dir1 = this.transform.TransformDirection(Vector3.back);
+                            }
+                            else if (relativePosition.z < 0.0)
+                            {
+                                dir = this.transform.TransformDirection(Vector3.back);
+                                dir1 = this.transform.TransformDirection(Vector3.forward);
+                            }
+
+                        }
+                    }
+                }
+
                 Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
                 if (Physics.Raycast(ray, out RaycastHit hit, 100))
                 {
@@ -248,13 +249,14 @@ public class MovableObjs : MonoBehaviour
             }
             if (Input.touches[0].phase == TouchPhase.Ended && isMoveObj)
             {
+                isMoveObj = false;
                 playerMov.GetComponent<PlayerMovements>().enabled = true;
                 playerMov.canMove = true;
                 playerMov.canClick = true;
                 if (canDrag)
                 {
-                    playerMov.InstObjs();
                     anim.SetBool("RunLoopStop", true);
+                    playerMov.InstObjs();
                 }
                 canDrag = false;
                 targetPosition = this.transform.position;

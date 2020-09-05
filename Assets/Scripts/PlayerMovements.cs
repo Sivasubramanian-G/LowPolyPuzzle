@@ -69,6 +69,7 @@ public class PlayerMovements : MonoBehaviour
 
     void OnEnable()
     {
+        Debug.Log("OnEnable");
         puzzle.enabled = false;
         puzzle.cam.enabled = false;
         targetPosition = this.transform.position;
@@ -81,6 +82,7 @@ public class PlayerMovements : MonoBehaviour
         {
             if (hit.collider.transform.parent.name == "TileParent")
             {
+                Debug.Log("OnEnableTileParent");
                 targetPosition = hit.collider.transform.position;
                 targetPosition.y = this.transform.position.y;
                 runAnim = true;

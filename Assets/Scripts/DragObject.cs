@@ -83,14 +83,14 @@ public class DragObject : MonoBehaviour
 					transform.position = new Vector3(transform.position.x, cursorPosition.y, transform.position.z);
 					nonTileDragObj.transform.position = new Vector3(transform.position.x, cursorPosition.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);
 				}
-				
 			}
 			if (Input.touches[0].phase == TouchPhase.Ended && isDragObj)
             {
+				playerMov.canInstance = true;
+				isDragObj = false;
 				playerMov.canMove = true;
 				playerMov.canClick = true;
 				//playerMov.InstObjs();
-				playerMov.canInstance = true;
 			}
 
 		}

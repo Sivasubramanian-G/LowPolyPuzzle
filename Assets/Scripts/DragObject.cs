@@ -64,7 +64,6 @@ public class DragObject : MonoBehaviour
 			}
 			if (Input.touches[0].phase == TouchPhase.Moved && isDragObj)
             {
-				
 				playerMov.canClick = false;
 				Vector3 cursorPoint = new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, screenPoint.z);
 				Vector3 cursorPosition = cam.ScreenToWorldPoint(cursorPoint) + offset;

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PortalMaterial
+  m_Name: PortalNotEnter
   m_Shader: {fileID: -6465566751694194690, guid: 5d5673405a4b707489d1c49c2a9e2071,
     type: 3}
   m_ShaderKeywords: 
@@ -30,4 +30,4 @@ Material:
     - Vector1_90479C90: 2.5
     - Vector1_F8CAC53E: 1
     m_Colors:
-    - Color_1313FB4E: {r: 4.8527365, g: 23.671467, b: 1.9829496, a: 1}
+    - Color_1313FB4E: {r: 5.9178686, g: 0.15491803, b: 0, a: 1}

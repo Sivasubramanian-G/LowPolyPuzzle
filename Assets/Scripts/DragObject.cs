@@ -20,6 +20,7 @@ public class DragObject : MonoBehaviour
 	void Start()
     {
 		initialPos = transform.position;
+		transform.position = new Vector3(transform.position.x, maxHeight, transform.position.z);
     }
 
 	void Update()

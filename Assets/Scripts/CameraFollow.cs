@@ -11,12 +11,13 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
-        distance = this.transform.position - player.transform.position;
+        //distance = this.transform.position - player.transform.position;
+        Screen.SetResolution((int)Screen.width, (int)Screen.height, true);
     }
 
     void LateUpdate()
     {
-        Vector3 targetPosition = new Vector3(player.position.x + distance.x, this.transform.position.y, player.position.z + distance.y);
-        transform.position = Vector3.Lerp(this.transform.position, targetPosition, smooth);
+        //Vector3 targetPosition = new Vector3(player.position.x + distance.x, this.transform.position.y, player.position.z + distance.y);
+        //transform.position = Vector3.Lerp(this.transform.position, targetPosition, smooth);
     }
 }

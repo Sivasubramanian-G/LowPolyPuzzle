@@ -92,29 +92,36 @@ public class MovableObjs : MonoBehaviour
                 Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
                 if (Physics.Raycast(ray, out RaycastHit hit, 100))
                 {
-                    if (hit.collider != null && hit.collider.transform.parent.name == "MovableObjs")
+                    try
                     {
-                        isMoveObj = true;
-                        playerMov.canClick = false;
-                        distance = this.transform.position - playerMov.transform.position;
-                        playerMov.canMove = false;
-                        playerMov.DestroyInsts();
-                        screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
-                        offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-                        if (!canDrag)
+                        if (hit.collider != null && hit.collider.transform.parent.name == "MovableObjs")
                         {
-                            playerMov.InstObjs();
+                            isMoveObj = true;
+                            playerMov.canClick = false;
+                            distance = this.transform.position - playerMov.transform.position;
+                            playerMov.canMove = false;
+                            playerMov.DestroyInsts();
+                            screenPoint = cam.WorldToScreenPoint(gameObject.transform.position);
+                            offset = gameObject.transform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+                            if (!canDrag)
+                            {
+                                playerMov.InstObjs();
+                            }
+                            else
+                            {
+                                anim.Play("RunStart");
+                                anim.SetBool("RunLoopStop", false);
+                            }
+                            playerMov.GetComponent<PlayerMovements>().enabled = false;
                         }
                         else
                         {
-                            anim.Play("RunStart");
-                            anim.SetBool("RunLoopStop", false);
+                            isMoveObj = false;
                         }
-                        playerMov.GetComponent<PlayerMovements>().enabled = false;
                     }
-                    else
+                    catch (Exception)
                     {
-                        isMoveObj = false;
+
                     }
                 }
             }

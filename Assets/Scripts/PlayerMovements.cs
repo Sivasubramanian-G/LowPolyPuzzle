@@ -112,12 +112,12 @@ public class PlayerMovements : MonoBehaviour
         }
 
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began && !PauseMenu.gamePaused)
         {
             ray = cam.ScreenPointToRay(Input.touches[0].position);
         }
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended)
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && !PauseMenu.gamePaused)
         {
             if (Physics.Raycast(ray, out hitM, dist))
             {
@@ -174,8 +174,6 @@ public class PlayerMovements : MonoBehaviour
                 }
             }
         }
-
-        
     }
 
     public Vector3 CalRelPos(Transform transformObj, Vector3 targetPosition)
@@ -190,7 +188,7 @@ public class PlayerMovements : MonoBehaviour
 
     public void InstObjs()
     {
-        pos = new Vector3(this.transform.position.x, this.transform.position.y - (this.GetComponent<Collider>().bounds.size.y) / 1.5f, this.transform.position.z + (this.GetComponent<Collider>().bounds.size.z) / 1.5f);
+        pos = new Vector3(this.transform.position.x, this.transform.position.y - (this.GetComponent<Collider>().bounds.size.y) / 1.5f, this.transform.position.z);
         dirF = this.transform.TransformDirection(-Vector3.up);
         dirR = this.transform.TransformDirection(Vector3.right);
         dirL = this.transform.TransformDirection(Vector3.left);

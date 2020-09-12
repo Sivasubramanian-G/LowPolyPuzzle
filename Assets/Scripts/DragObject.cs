@@ -9,7 +9,7 @@ public class DragObject : MonoBehaviour
 
 	public Camera cam = null;
 
-	public float maxHeight = 3f;
+	public float maxHeight = 0.01f;
 
 	[HideInInspector]
 	public Vector3 screenPoint, offset, initialPos;
@@ -21,21 +21,22 @@ public class DragObject : MonoBehaviour
     {
 		initialPos = transform.position;
 		transform.position = new Vector3(transform.position.x, maxHeight, transform.position.z);
-    }
+		nonTileDragObj.transform.position = new Vector3(transform.position.x, transform.position.y - this.GetComponent<Collider>().bounds.size.y * 3f, transform.position.z);
+	}
+
+	void OnDrawGizmos()
+	{
+		//Gizmos.DrawSphere(this.transform.position, 1.25f);
+	}
 
 	void Update()
     {
-		Vector3 dir = this.transform.TransformDirection(Vector3.up);
-
-		Debug.DrawRay(this.transform.position, dir * 10, Color.red);
-
-		RaycastHit[] hits = Physics.RaycastAll(this.transform.position, dir, 5).OrderBy(h => h.distance).ToArray(); ;
-
+		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, 1.5f);
 		canDrag = true;
-		for (int i = 0; i < hits.Length; i++)
+
+		foreach (var hitCollider in hitColliders)
 		{
-			RaycastHit hit = hits[i];
-			if (hit.collider.name == "Player")
+			if (hitCollider.name == "Player")
 			{
 				canDrag = false;
 			}
@@ -48,7 +49,7 @@ public class DragObject : MonoBehaviour
 				Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
 				if (Physics.Raycast(ray, out RaycastHit hit, 100))
 				{
-					if (hit.collider != null && hit.collider.transform.name == "Cube (8)")
+					if (hit.collider != null && hit.collider.tag == "DragObj")
                     {
 						isDragObj = true;
 						playerMov.canMove = false;
@@ -81,7 +82,7 @@ public class DragObject : MonoBehaviour
 				if (canDrag)
 				{
 					transform.position = new Vector3(transform.position.x, cursorPosition.y, transform.position.z);
-					nonTileDragObj.transform.position = new Vector3(transform.position.x, cursorPosition.y - this.GetComponent<Collider>().bounds.size.y * 1.5f, transform.position.z);
+					nonTileDragObj.transform.position = new Vector3(transform.position.x, cursorPosition.y - this.GetComponent<Collider>().bounds.size.y * 3f, transform.position.z);
 				}
 			}
 			if (Input.touches[0].phase == TouchPhase.Ended && isDragObj)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -92,6 +93,66 @@ public class PlayerMovements : MonoBehaviour
         }
     }
 
+    IEnumerator WaitSecs()
+    {
+        yield return new WaitForSeconds(0.05f);
+
+        if (Physics.Raycast(ray, out hitM, dist))
+        {
+            if (hitM.collider != null)
+            {
+                try
+                {
+                    if (hitM.collider.transform.parent.name == "TileParent" && hitM.transform.Find("PathHighlight(Clone)") != null)
+                    {
+                        canInstance = true;
+                        start = false;
+                        canMove = false;
+                        runAnim = true;
+
+                        DestroyInsts();
+
+                        targetPosition = hitM.collider.transform.position;
+
+                        relativePosition = CalRelPos(this.transform, targetPosition);
+
+                        targetPosition.y = this.transform.position.y;
+
+                        if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.y))
+                        {
+                            if (relativePosition.x > 0.0)
+                            {
+                                anim.Play("TurnRight");
+                                smooth = 0.35f;
+                                targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
+                            }
+                            if (relativePosition.x < 0.0)
+                            {
+                                anim.Play("TurnLeft");
+                                smooth = 0.35f;
+                                targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
+                            }
+                        }
+                        else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
+                        {
+                            if (relativePosition.y > 0.0)
+                            {
+                                anim.Play("TurnAround");
+                                smooth = 0.5f;
+                                targetRotation *= Quaternion.AngleAxis(180, Vector3.forward);
+                            }
+                        }
+                        anim.SetBool("RunLoopStop", false);
+                    }
+                }
+                catch (Exception)
+                {
+                    targetPosition = this.transform.position;
+                }
+            }
+        }
+    }
+
     private void Update()
     {
         Vector3 dir = this.transform.TransformDirection(Vector3.back);
@@ -119,60 +180,7 @@ public class PlayerMovements : MonoBehaviour
 
         if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && !PauseMenu.gamePaused)
         {
-            if (Physics.Raycast(ray, out hitM, dist))
-            {
-                if (hitM.collider != null)
-                {
-                    try
-                    {
-                        if (hitM.collider.transform.parent.name == "TileParent" && hitM.transform.Find("PathHighlight(Clone)") != null)
-                        {
-                            canInstance = true;
-                            start = false;
-                            canMove = false;
-                            runAnim = true;
-
-                            DestroyInsts();
-
-                            targetPosition = hitM.collider.transform.position;
-
-                            relativePosition = CalRelPos(this.transform, targetPosition);
-
-                            targetPosition.y = this.transform.position.y;
-
-                            if (Math.Abs(relativePosition.x) > Math.Abs(relativePosition.y))
-                            {
-                                if (relativePosition.x > 0.0)
-                                {
-                                    anim.Play("TurnRight");
-                                    smooth = 0.35f;
-                                    targetRotation *= Quaternion.AngleAxis(90, Vector3.forward);
-                                }
-                                if (relativePosition.x < 0.0)
-                                {
-                                    anim.Play("TurnLeft");
-                                    smooth = 0.35f;
-                                    targetRotation *= Quaternion.AngleAxis(-90, Vector3.forward);
-                                }
-                            }
-                            else if (Math.Abs(relativePosition.y) > Math.Abs(relativePosition.x))
-                            {
-                                if (relativePosition.y > 0.0)
-                                {
-                                    anim.Play("TurnAround");
-                                    smooth = 0.5f;
-                                    targetRotation *= Quaternion.AngleAxis(180, Vector3.forward);
-                                }
-                            }
-                            anim.SetBool("RunLoopStop", false);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        targetPosition = this.transform.position;
-                    }
-                }
-            }
+            StartCoroutine(WaitSecs());
         }
     }
 

@@ -10,12 +10,12 @@ public class MovableObjs : MonoBehaviour
 
     public GameObject nonTileDragObj = null;
 
-    public float speed = 1f;
+    public float speed = 20f;
 
     public Animator anim = null;
 
     [HideInInspector]
-    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD;
+    public Vector3 relativePosition, distance, targetPosition, screenPoint, offset, dir, dir1, dirD, movTilePos;
 
     [HideInInspector]
     public RaycastHit[] hit, hit1, hits;
@@ -34,7 +34,7 @@ public class MovableObjs : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        //Gizmos.DrawSphere(this.transform.position, 4f);
+        //Gizmos.DrawSphere(this.transform.position, 3f);
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class MovableObjs : MonoBehaviour
         {
             if (Input.touches[0].phase == TouchPhase.Began)
             {
-                hitColliders = Physics.OverlapSphere(this.transform.position, 2.5f);
+                hitColliders = Physics.OverlapSphere(this.transform.position, 3f);
                 canDrag = false;
 
                 foreach (var hitCollider in hitColliders)
@@ -94,7 +94,7 @@ public class MovableObjs : MonoBehaviour
                 {
                     try
                     {
-                        if (hit.collider != null && hit.collider.transform.parent.name == "MovableObjs")
+                        if (hit.collider != null && hit.collider.tag == "MovableObj")
                         {
                             isMoveObj = true;
                             playerMov.canClick = false;
@@ -141,102 +141,110 @@ public class MovableObjs : MonoBehaviour
 
                     for (int i = 0; i < hits.Length; i++)
                     {
-                        if (hits[i].collider.transform.parent.name == "TileParent")
+                        try
                         {
-                            float dist = hits[i].collider.bounds.size.x;
-                            hit = Physics.RaycastAll(hits[i].collider.transform.position, dir, dist * 2f).OrderBy(h => h.distance).ToArray();
-                            hit1 = Physics.RaycastAll(hits[i].collider.transform.position, dir1, dist).OrderBy(h => h.distance).ToArray();
-
-                            for (int j = 0; j < hit.Length; j++)
+                            if (hits[i].collider.transform.parent.name == "TileParent")
                             {
-                                if (hit[j].collider.transform.parent.name == "TileParent")
-                                {
-                                    continue;
-                                }
-                                else if (hit[j].collider.transform.parent.name == "OuterRegion")
-                                {
-                                    if (lefR)
-                                    {
-                                        if (dir == this.transform.TransformDirection(Vector3.right))
-                                        {
-                                            if (cursorPosition.x > hits[i].collider.transform.position.x)
-                                            {
-                                                cursorPosition.x = hits[i].collider.transform.position.x;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (cursorPosition.x < hits[i].collider.transform.position.x)
-                                            {
-                                                cursorPosition.x = hits[i].collider.transform.position.x;
-                                            }
-                                        }
+                                float dist = hits[i].collider.bounds.size.x;
+                                movTilePos = new Vector3(hits[i].collider.transform.position.x, hits[i].collider.transform.position.y - this.GetComponent<Collider>().bounds.size.y / 1.5f, hits[i].collider.transform.position.z);
+                                hit = Physics.RaycastAll(movTilePos, dir, dist * 2f).OrderBy(h => h.distance).ToArray();
+                                hit1 = Physics.RaycastAll(movTilePos, dir1, dist).OrderBy(h => h.distance).ToArray();
 
-                                    }
-                                    else if (forB)
+                                for (int j = 0; j < hit.Length; j++)
+                                {
+                                    if (hit[j].collider.transform.parent.name == "TileParent")
                                     {
-                                        if (dir == this.transform.TransformDirection(Vector3.forward))
-                                        {
-                                            if (cursorPosition.z > hits[i].collider.transform.position.z)
-                                            {
-                                                cursorPosition.z = hits[i].collider.transform.position.z;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (cursorPosition.z < hits[i].collider.transform.position.z)
-                                            {
-                                                cursorPosition.z = hits[i].collider.transform.position.z;
-                                            }
-                                        }
+                                        continue;
                                     }
-                                }
-                            }
+                                    else if (hit[j].collider.transform.parent.name == "OuterRegion")
+                                    {
+                                        if (lefR)
+                                        {
+                                            if (dir == this.transform.TransformDirection(Vector3.right))
+                                            {
+                                                if (cursorPosition.x > hits[i].collider.transform.position.x)
+                                                {
+                                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                                {
+                                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                                }
+                                            }
 
-                            for (int j = 0; j < hit1.Length; j++)
-                            {
-                                if (hit1[j].collider.transform.parent.name == "TileParent")
-                                {
-                                    continue;
-                                }
-                                else if (hit1[j].collider.transform.parent.name == "OuterRegion")
-                                {
-                                    if (lefR)
-                                    {
-                                        if (dir1 == this.transform.TransformDirection(Vector3.right))
-                                        {
-                                            if (cursorPosition.x > hits[i].collider.transform.position.x)
-                                            {
-                                                cursorPosition.x = hits[i].collider.transform.position.x;
-                                            }
                                         }
-                                        else
+                                        else if (forB)
                                         {
-                                            if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                            if (dir == this.transform.TransformDirection(Vector3.forward))
                                             {
-                                                cursorPosition.x = hits[i].collider.transform.position.x;
+                                                if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                                {
+                                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                                }
                                             }
-                                        }
-                                    }
-                                    else if (forB)
-                                    {
-                                        if (dir1 == this.transform.TransformDirection(Vector3.forward))
-                                        {
-                                            if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                            else
                                             {
-                                                cursorPosition.z = hits[i].collider.transform.position.z;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (cursorPosition.z < hits[i].collider.transform.position.z)
-                                            {
-                                                cursorPosition.z = hits[i].collider.transform.position.z;
+                                                if (cursorPosition.z < hits[i].collider.transform.position.z)
+                                                {
+                                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                                }
                                             }
                                         }
                                     }
                                 }
+
+                                for (int j = 0; j < hit1.Length; j++)
+                                {
+                                    if (hit1[j].collider.transform.parent.name == "TileParent")
+                                    {
+                                        continue;
+                                    }
+                                    else if (hit1[j].collider.transform.parent.name == "OuterRegion")
+                                    {
+                                        if (lefR)
+                                        {
+                                            if (dir1 == this.transform.TransformDirection(Vector3.right))
+                                            {
+                                                if (cursorPosition.x > hits[i].collider.transform.position.x)
+                                                {
+                                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (cursorPosition.x < hits[i].collider.transform.position.x)
+                                                {
+                                                    cursorPosition.x = hits[i].collider.transform.position.x;
+                                                }
+                                            }
+                                        }
+                                        else if (forB)
+                                        {
+                                            if (dir1 == this.transform.TransformDirection(Vector3.forward))
+                                            {
+                                                if (cursorPosition.z > hits[i].collider.transform.position.z)
+                                                {
+                                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (cursorPosition.z < hits[i].collider.transform.position.z)
+                                                {
+                                                    cursorPosition.z = hits[i].collider.transform.position.z;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                             }
+                        }
+                        catch (Exception)
+                        {
 
                         }
                     }
@@ -274,12 +282,20 @@ public class MovableObjs : MonoBehaviour
                 for (int i = 0; i < hit.Length; i++)
                 {
                     RaycastHit hit1 = hit[i];
-                    if (hit1.collider.transform.parent.name == "TileParent")
+                    try
                     {
-                        targetPosition = hit1.collider.transform.position;
-                        targetPosition.y = this.transform.position.y;
-                        canMove = true;
+                        if (hit1.collider.transform.parent.name == "TileParent")
+                        {
+                            targetPosition = hit1.collider.transform.position;
+                            targetPosition.y = this.transform.position.y;
+                            canMove = true;
+                        }
                     }
+                    catch (Exception)
+                    {
+
+                    }
+                    
                 }
             }
         }

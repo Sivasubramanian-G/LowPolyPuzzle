@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - DragObj
+  - MovableObj
   layers:
   - Default
   - TransparentFX

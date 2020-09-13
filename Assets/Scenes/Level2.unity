@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a41ccd9c129eb49842d7f3ba3200c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNum: 0
+  sceneNum: 2
 --- !u!135 &153687458
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1474,7 +1474,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 834246884}
-  - component: {fileID: 834246883}
   m_Layer: 0
   m_Name: SceneManagement
   m_TagString: Untagged
@@ -1482,19 +1481,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &834246883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834246882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8a41ccd9c129eb49842d7f3ba3200c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneNum: 0
 --- !u!4 &834246884
 Transform:
   m_ObjectHideFlags: 0

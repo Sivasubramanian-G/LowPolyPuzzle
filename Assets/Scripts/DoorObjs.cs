@@ -7,10 +7,20 @@ public class DoorObjs : MonoBehaviour
 
     public GameObject nonTileDoorObj = null;
 
+    public float speed = 0.04f;
+
     [HideInInspector]
     public Collider[] hitColliders;
     public Ray ray;
     public RaycastHit hit;
+
+    [HideInInspector]
+    public Vector3 targetPosition;
+
+    void Start()
+    {
+        targetPosition = this.transform.position;
+    }
 
     void Update()
     {
@@ -18,16 +28,20 @@ public class DoorObjs : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop"))
+            if (hitCollider.name == "Player" && playerMov.anim.GetBool("RunLoopStop") && playerMov.haveKey)
             {
-                if (playerMov.haveKey)
+                if (this.GetComponent<Collider>().tag == playerMov.keyTag)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, transform.position.z);
+                    targetPosition = new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, transform.position.z);
                     nonTileDoorObj.transform.position = new Vector3(nonTileDoorObj.transform.position.x, nonTileDoorObj.transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, nonTileDoorObj.transform.position.z);
                     playerMov.DestroyInsts();
                     playerMov.canInstance = true;
+                    playerMov.haveKey = false;
                 }
             }
         }
+
+        transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
+
     }
 }

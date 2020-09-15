@@ -2,8 +2,6 @@
 
 public class KeyObjs : MonoBehaviour
 {
-    public GameObject keyTrigger;
-
     public PlayerMovements playerMov;
 
     private void OnTriggerEnter(Collider other)
@@ -11,6 +9,7 @@ public class KeyObjs : MonoBehaviour
         if (other.name == "Player")
         {
             playerMov.haveKey = true;
+            playerMov.keyTag = this.GetComponent<Collider>().tag;
             Destroy(gameObject);
         }
     }

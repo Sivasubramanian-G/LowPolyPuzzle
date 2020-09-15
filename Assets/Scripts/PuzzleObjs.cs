@@ -6,8 +6,6 @@ public class PuzzleObjs : MonoBehaviour
 
     public PlayerMovements playerMov = null;
 
-    public LeverMechanism lever = null;
-
     public Puzzle puzzle = null;
 
     public Camera cam = null;

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - DragObj
   - MovableObj
+  - GreenDK
+  - BlueDK
+  - RedDK
   layers:
   - Default
   - TransparentFX

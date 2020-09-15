@@ -9,7 +9,7 @@ public class DragObject : MonoBehaviour
 
 	public Camera cam = null;
 
-	public float maxHeight = 0.01f;
+	public float maxHeight = -4f;
 
 	[HideInInspector]
 	public Vector3 screenPoint, offset, initialPos;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class DoorObjs : MonoBehaviour
 {
@@ -34,8 +35,7 @@ public class DoorObjs : MonoBehaviour
                 {
                     targetPosition = new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, transform.position.z);
                     nonTileDoorObj.transform.position = new Vector3(nonTileDoorObj.transform.position.x, nonTileDoorObj.transform.position.y - gameObject.GetComponent<Collider>().bounds.size.y * 2, nonTileDoorObj.transform.position.z);
-                    playerMov.DestroyInsts();
-                    playerMov.canInstance = true;
+                    StartCoroutine(WaitSecs());
                     playerMov.haveKey = false;
                 }
             }
@@ -44,4 +44,12 @@ public class DoorObjs : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
 
     }
+
+    IEnumerator WaitSecs()
+    {
+        yield return new WaitForSeconds(0.05f);
+        playerMov.DestroyInsts();
+        playerMov.canInstance = true;
+    }
+
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Puzzle : MonoBehaviour
@@ -24,8 +25,8 @@ public class Puzzle : MonoBehaviour
     int shuffleMovesRemaining;
 
     Vector2Int prevShuffleOffset;
-    
-    public enum PuzzleState {Start, Solved, Shuffling, InPlay};
+
+    public enum PuzzleState { Start, Solved, Shuffling, InPlay };
     public PuzzleState state;
 
     void Start()
@@ -44,6 +45,7 @@ public class Puzzle : MonoBehaviour
             cam.enabled = false;
             playerCam.enabled = true;
             playerMov.enabled = true;
+            PuzzleObjs.doorOpen = true;
         }
     }
 
@@ -146,7 +148,7 @@ public class Puzzle : MonoBehaviour
         Vector2Int[] offsets = { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1) };
         int randomIndex = Random.Range(0, offsets.Length);
 
-        for(int i = 0; i < offsets.Length; i++)
+        for (int i = 0; i < offsets.Length; i++)
         {
             Vector2Int offset = offsets[(randomIndex + i) % offsets.Length];
             if (offset != prevShuffleOffset * -1)
@@ -165,7 +167,7 @@ public class Puzzle : MonoBehaviour
 
     void CheckIfSolved()
     {
-        foreach(BlockEvent block in blocks)
+        foreach (BlockEvent block in blocks)
         {
             if (!block.IsAtStartingCoord())
             {

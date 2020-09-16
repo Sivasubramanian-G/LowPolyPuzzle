@@ -46,7 +46,6 @@ public class PlayerMovements : MonoBehaviour
         targetRotation = this.transform.rotation;
         rb = GetComponent<Rigidbody>();
         anim.speed = 5f;
-        
     }
 
     public void FixedUpdate()
@@ -277,7 +276,7 @@ public class PlayerMovements : MonoBehaviour
             }
             catch (Exception)
             {
-
+                Debug.Log("Some Fuckin' error");
             }
             
             canInstance = false;

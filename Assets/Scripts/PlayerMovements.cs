@@ -216,69 +216,62 @@ public class PlayerMovements : MonoBehaviour
             hitL = Physics.RaycastAll(pos, dirL, dist).OrderBy(h => h.distance).ToArray();
             hitR = Physics.RaycastAll(pos, dirR, dist).OrderBy(h => h.distance).ToArray();
 
-            try
-            {
-                for (int i = 0; i < hitF.Length; i++)
-                {
-                    RaycastHit hit = hitF[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    else if (hit.collider.transform.parent.name == "TileParent")
-                    {
-                        guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                        Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                    }
-                }
-
-                for (int i = 0; i < hitB.Length; i++)
-                {
-                    RaycastHit hit = hitB[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    else if (hit.collider.transform.parent.name == "TileParent")
-                    {
-                        guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                        Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                    }
-                }
-
-                for (int i = 0; i < hitL.Length; i++)
-                {
-                    RaycastHit hit = hitL[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    else if (hit.collider.transform.parent.name == "TileParent")
-                    {
-                        guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                        Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                    }
-                }
-
-                for (int i = 0; i < hitR.Length; i++)
-                {
-                    RaycastHit hit = hitR[i];
-                    if (hit.collider.transform.parent.name == "NonTileParent")
-                    {
-                        break;
-                    }
-                    else if (hit.collider.transform.parent.name == "TileParent")
-                    {
-                        guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
-                        Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                Debug.Log("Some Fuckin' error");
-            }
             
+            for (int i = 0; i < hitF.Length; i++)
+            {
+                RaycastHit hit = hitF[i];
+                if (hit.collider.transform.parent.name == "NonTileParent")
+                {
+                    break;
+                }
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
+            }
+
+            for (int i = 0; i < hitB.Length; i++)
+            {
+                RaycastHit hit = hitB[i];
+                if (hit.collider.transform.parent.name == "NonTileParent")
+                {
+                    break;
+                }
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
+            }
+
+            for (int i = 0; i < hitL.Length; i++)
+            {
+                RaycastHit hit = hitL[i];
+                if (hit.collider.transform.parent.name == "NonTileParent")
+                {
+                    break;
+                }
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
+            }
+
+            for (int i = 0; i < hitR.Length; i++)
+            {
+                RaycastHit hit = hitR[i];
+                if (hit.collider.transform.parent.name == "NonTileParent")
+                {
+                    break;
+                }
+                else if (hit.collider.transform.parent.name == "TileParent")
+                {
+                    guidePos = new Vector3(hit.collider.transform.position.x, hit.collider.transform.position.y + hit.collider.bounds.size.y / 2, hit.collider.transform.position.z);
+                    Instantiate(pathHighlight, guidePos, Quaternion.identity).transform.SetParent(hit.collider.transform);
+                }
+            }
             canInstance = false;
         }
     }

@@ -47,8 +47,8 @@ public class DoorObjs : MonoBehaviour
 
     IEnumerator WaitSecs()
     {
-        yield return new WaitForSeconds(0.05f);
         playerMov.DestroyInsts();
+        yield return new WaitForSeconds(0.5f);
         playerMov.canInstance = true;
     }
 

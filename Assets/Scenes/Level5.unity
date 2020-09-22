@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -160,7 +160,7 @@ MonoBehaviour:
   playerMov: {fileID: 969458424}
   defaultDuration: 0.2
   shuffleDuration: 0.1
-  image: {fileID: 2800000, guid: 225e83c9d5d910c4f923c01b3e50d2db, type: 3}
+  image: {fileID: 2800000, guid: 78d542b8bd8e5ca47988950df9493a75, type: 3}
   state: 0
 --- !u!64 &2385858
 MeshCollider:
@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1534128331}
-  inGameUI: {fileID: 0}
+  inGameUI: {fileID: 915159634}
 --- !u!114 &846868446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1713,6 +1713,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899618384}
   m_CullTransparentMesh: 0
+--- !u!1 &915159634 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6971075130518929583, guid: 143cff69ec927e447a1d94a5b236a0ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 457843820}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &928838539
 GameObject:
   m_ObjectHideFlags: 0

@@ -3689,7 +3689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1116770255}
-  inGameUI: {fileID: 0}
+  inGameUI: {fileID: 1886515075}
 --- !u!114 &1620794399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4243,6 +4243,12 @@ PrefabInstance:
 --- !u!224 &1886515074 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6971075130518929570, guid: 143cff69ec927e447a1d94a5b236a0ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 1886515073}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1886515075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6971075130518929583, guid: 143cff69ec927e447a1d94a5b236a0ec,
     type: 3}
   m_PrefabInstance: {fileID: 1886515073}
   m_PrefabAsset: {fileID: 0}

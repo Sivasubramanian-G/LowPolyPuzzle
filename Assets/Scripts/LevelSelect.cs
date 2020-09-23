@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelect : MonoBehaviour
 {
+    public int levelLimit;
     public Button button, disabledButton;
     public RectTransform parent;
 
@@ -15,10 +16,10 @@ public class LevelSelect : MonoBehaviour
 
     void CheckFirstTime()
     {
-        if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex.ToString()) == 0)
+        if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed") == 0)
         {
-            PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex.ToString(), 1);
-            SceneManager.LoadScene(0);
+            PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed", 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
@@ -32,17 +33,17 @@ public class LevelSelect : MonoBehaviour
         float x = startX;
         float y = coords[1].y + ((parent.GetComponent<RectTransform>().rect.height - (button.GetComponent<RectTransform>().rect.height * 3)) / 2);
 
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= levelLimit; i++)
         {
-            int I = i;
+            int I = SceneManager.GetActiveScene().buildIndex + i;
             Button btn;
-            if (PlayerPrefs.GetInt((i - 1).ToString() + "completed") == 1)
+            if (PlayerPrefs.GetInt((SceneManager.GetActiveScene().buildIndex + i).ToString() + "completed") == 1)
             {
                 btn = Instantiate(button);
             }
             else
             {
-                if ((i-1) == 0)
+                if (SceneManager.GetActiveScene().buildIndex + i == SceneManager.GetActiveScene().buildIndex + 1)
                 {
                     btn = Instantiate(button);
                 }
@@ -59,7 +60,7 @@ public class LevelSelect : MonoBehaviour
 
             btn.transform.SetParent(parent, false);
             btnRect.anchoredPosition = new Vector2(x + width / 4, y - height);
-            btn.onClick.AddListener(() => Temp(btn, I - 1));
+            btn.onClick.AddListener(() => Temp(btn, I));
 
             if (i % 4 == 0)
             {
@@ -75,7 +76,6 @@ public class LevelSelect : MonoBehaviour
 
     void Temp(Button btn, int i)
     {
-        Debug.Log("Scene Number : " + i);
         SceneManager.LoadScene(i);
     }
 }

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -580,6 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a2e3a3d0bb11d41b79b5cb6b4872a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelLimit: 5
   button: {fileID: 972627948758579625, guid: d687f121131d85442adafbd31f687343, type: 3}
   disabledButton: {fileID: 8974692964046019681, guid: 1c4e06ed8729f194887c82fff373379e,
     type: 3}

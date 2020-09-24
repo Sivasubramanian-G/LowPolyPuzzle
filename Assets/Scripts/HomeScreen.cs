@@ -34,4 +34,10 @@ public class HomeScreen : MonoBehaviour
             Application.Quit();
         }
     }
+
+    public void Levels()
+    {
+        SceneManager.LoadScene(1);
+    }
+
 }

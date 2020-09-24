@@ -20,7 +20,14 @@ public class ChangeScene : MonoBehaviour
             {
                 PlayerPrefs.SetInt(levelPrefs, 1);
             }
-            SceneManager.LoadScene(sceneNum);
+            if (SceneManager.sceneCountInBuildSettings - 1 < sceneNum)
+            {
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                SceneManager.LoadScene(sceneNum);
+            }
         }
     }
 }

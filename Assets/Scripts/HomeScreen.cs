@@ -3,18 +3,22 @@ using UnityEngine.SceneManagement;
 
 public class HomeScreen : MonoBehaviour
 {
-
+    public VideoControl videoControl;
     void Start()
     {
-        if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed") == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed", 1);
-            Play();
+            if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed") == 0)
+            {
+                PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed", 1);
+                Play();
+            }
         }
     }
 
     public void Play()
     {
+        videoControl.SaveFrame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -25,14 +29,7 @@ public class HomeScreen : MonoBehaviour
 
     public void Quit()
     {
-        if (UnityEditor.EditorApplication.isPlaying == true)
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
-        else
-        {
-            Application.Quit();
-        }
+        Application.Quit();
     }
 
     public void Levels()

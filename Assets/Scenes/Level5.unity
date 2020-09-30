@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1320,7 +1320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786758320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.78, y: 0, z: 3.18}
+  m_LocalPosition: {x: 6.8199997, y: 0, z: 1.1699998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1881017992}
@@ -1343,7 +1343,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 27415eb667faeb541927769cc0e9b030,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.3142395
+      value: 0.7257602
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27415eb667faeb541927769cc0e9b030,
         type: 3}
@@ -1353,7 +1353,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 27415eb667faeb541927769cc0e9b030,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.797398
+      value: -6.8073983
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27415eb667faeb541927769cc0e9b030,
         type: 3}
@@ -1496,7 +1496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838583136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.395701, y: -7.7606, z: -15.418999}
+  m_LocalPosition: {x: -10.355701, y: -7.7606, z: -17.428999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1726613408}
@@ -1820,8 +1820,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928838539}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.291817, y: -7.25, z: -4.02}
-  m_LocalScale: {x: 4.0665, y: 4.0665, z: 4.0665}
+  m_LocalPosition: {x: -0.25182, y: -7.25, z: -6.03}
+  m_LocalScale: {x: 6.27339, y: 6.27339, z: 6.27339}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
@@ -1971,7 +1971,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.33999968
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
@@ -1981,7 +1981,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.91
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d0da39954e473e642bb04c7ee99cac3a,
         type: 3}
@@ -2148,7 +2148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980237231}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.78, y: 0, z: 3.18}
+  m_LocalPosition: {x: 6.8199997, y: 0, z: 1.1699998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 72323003}
@@ -2385,7 +2385,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101298798}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6356997, y: -0.050600052, z: 3.201}
+  m_LocalPosition: {x: -0.5957, y: -0.050600052, z: 1.1909997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1279624803}
@@ -2513,7 +2513,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157710726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.78, y: 0, z: 3.18}
+  m_LocalPosition: {x: 6.8199997, y: 0, z: 1.1699998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2114015104}
@@ -3822,7 +3822,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761746346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2468, y: 0, z: 3.18}
+  m_LocalPosition: {x: -0.20680022, y: 0, z: 1.1699998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1030929182}

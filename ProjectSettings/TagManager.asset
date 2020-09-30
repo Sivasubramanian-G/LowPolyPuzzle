@@ -7,8 +7,6 @@ TagManager:
   - DragObj
   - MovableObj
   - GreenDK
-  - BlueDK
-  - RedDK
   - SlidePuzzle
   layers:
   - Default

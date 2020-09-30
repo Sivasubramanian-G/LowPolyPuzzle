@@ -7,6 +7,7 @@ public class LevelSelect : MonoBehaviour
     public int levelLimit;
     public Button button, disabledButton;
     public RectTransform parent;
+    public VideoControl videoControl;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class LevelSelect : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed") == 0)
         {
+            videoControl.SaveFrame();
             PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex.ToString() + "completed", 1);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
@@ -76,6 +78,7 @@ public class LevelSelect : MonoBehaviour
 
     void Temp(Button btn, int i)
     {
+        videoControl.SaveFrame();
         SceneManager.LoadScene(i);
     }
 }

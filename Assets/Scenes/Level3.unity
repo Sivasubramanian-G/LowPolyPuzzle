@@ -984,6 +984,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1620794404}
@@ -991,6 +996,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Levels
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1620794398}
+    - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ExitingPauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686661213096915508, guid: 9df427838b7c6244e862cc6379f97fc1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7686661213738465034, guid: 9df427838b7c6244e862cc6379f97fc1,
         type: 3}
@@ -3666,6 +3696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e931a5024e000dc4d9e467add4fbf177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  videoControl: {fileID: 0}
 --- !u!1 &1647658059
 GameObject:
   m_ObjectHideFlags: 0

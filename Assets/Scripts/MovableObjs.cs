@@ -34,7 +34,7 @@ public class MovableObjs : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        //Gizmos.DrawSphere(this.transform.position, 3f);
+        Gizmos.DrawSphere(this.transform.position, 2f);
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class MovableObjs : MonoBehaviour
         {
             if (Input.touches[0].phase == TouchPhase.Began)
             {
-                hitColliders = Physics.OverlapSphere(this.transform.position, 3f);
+                hitColliders = Physics.OverlapSphere(this.transform.position, 2f);
                 canDrag = false;
 
                 foreach (var hitCollider in hitColliders)

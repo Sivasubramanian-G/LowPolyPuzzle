@@ -39,7 +39,7 @@ public class LevelSelect : MonoBehaviour
         {
             int I = SceneManager.GetActiveScene().buildIndex + i;
             Button btn;
-            if (PlayerPrefs.GetInt((SceneManager.GetActiveScene().buildIndex + i).ToString() + "completed") == 1)
+            if (PlayerPrefs.GetInt((SceneManager.GetActiveScene().buildIndex + i).ToString()) == 1)
             {
                 btn = Instantiate(button);
             }

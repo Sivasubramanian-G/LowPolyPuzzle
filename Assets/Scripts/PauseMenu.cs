@@ -24,4 +24,10 @@ public class PauseMenu : MonoBehaviour
             gamePaused = true;
     }
 
+    public void ExitingPauseMenu()
+    {
+        Time.timeScale = 1f;
+        gamePaused = false;
+    }
+
 }

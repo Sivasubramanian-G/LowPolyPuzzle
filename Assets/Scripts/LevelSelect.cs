@@ -6,8 +6,13 @@ public class LevelSelect : MonoBehaviour
 {
     public int levelLimit;
     public Button button, disabledButton;
-    public RectTransform parent;
+    public GameObject parent, uiPanel2;
     public VideoControl videoControl;
+
+    [HideInInspector]
+    public float startX, startY;
+    [HideInInspector]
+    public Vector3[] coords;
 
     void Start()
     {
@@ -25,15 +30,23 @@ public class LevelSelect : MonoBehaviour
         }
     }
 
+    void SetStartXY()
+    {
+        coords = new Vector3[4];
+        parent.GetComponent<RectTransform>().GetLocalCorners(coords);
+        startX = coords[1].x + ((parent.GetComponent<RectTransform>().rect.width - (button.GetComponent<RectTransform>().rect.width * 7)) / 2);
+        startY = coords[1].y + ((parent.GetComponent<RectTransform>().rect.height - (button.GetComponent<RectTransform>().rect.height * 5)) / 2);
+    }
+
     void SetupButtons()
     {
-        Vector3[] coords = new Vector3[4];
-        parent.GetLocalCorners(coords);
 
-        float startX = coords[1].x + ((parent.GetComponent<RectTransform>().rect.width - (button.GetComponent<RectTransform>().rect.width * 7)) / 2);
+        SetStartXY();
+
+        uiPanel2.transform.localPosition = new Vector2(coords[2].x + uiPanel2.GetComponent<RectTransform>().rect.width / 2, parent.transform.localPosition.y);
 
         float x = startX;
-        float y = coords[1].y + ((parent.GetComponent<RectTransform>().rect.height - (button.GetComponent<RectTransform>().rect.height * 3)) / 2);
+        float y = startY;
 
         for (int i = 1; i <= levelLimit; i++)
         {
@@ -60,7 +73,7 @@ public class LevelSelect : MonoBehaviour
             float width = btnRect.rect.width * 2;
             float height = btnRect.rect.height * 2;
 
-            btn.transform.SetParent(parent, false);
+            btn.transform.SetParent(parent.transform, false);
             btnRect.anchoredPosition = new Vector2(x + width / 4, y - height);
             btn.onClick.AddListener(() => Temp(btn, I));
 
@@ -73,6 +86,15 @@ public class LevelSelect : MonoBehaviour
             {
                 x += width;
             }
+
+            if (i % 8 == 0)
+            {
+                parent = uiPanel2;
+                SetStartXY();
+                x = startX;
+                y = startY;
+            }
+
         }
     }
 
